@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# PreToolUse hook: block dangerous commands
+# Reads JSON from stdin, exits 2 to deny, 0 to allow
+
+INPUT=$(cat)
+TOOL=$(echo "$INPUT" | jq -r '.tool_name // ""')
+ARGS=$(echo "$INPUT" | jq -r '.tool_input // ""')
+
+# Block dangerous bash commands
+if [ "$TOOL" = "Bash" ] || [ "$TOOL" = "bash" ]; then
+    # Block rm -rf, sudo, git push --force, chmod 777
+    if echo "$ARGS" | grep -qE 'rm\s+-rf|sudo|git\s+push\s+--force|chmod\s+777|> /dev/sda|mkfs\.|dd\s+if='; then
+        echo '{"systemMessage": "Blocked: dangerous command detected. If intentional, explain why."}' >&2
+        exit 2
+    fi
+
+    # Block git add -A / git add .
+    if echo "$ARGS" | grep -qE 'git\s+add\s+-A|git\s+add\s+\.($|[^a-zA-Z])'; then
+        echo '{"systemMessage": "Blocked: git add -A/. not allowed. Stage explicit files."}' >&2
+        exit 2
+    fi
+fi
+
+exit 0

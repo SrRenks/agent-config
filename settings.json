@@ -1,0 +1,82 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make:*)",
+      "Bash(go:*)",
+      "Bash(cargo:*)",
+      "Bash(python:*)",
+      "Bash(pytest:*)",
+      "Bash(npm:*)",
+      "Bash(yarn:*)",
+      "Bash(pnpm:*)",
+      "Bash(git:diff*)",
+      "Bash(git:status*)",
+      "Bash(git:log*)",
+      "Bash(git:branch*)",
+      "Bash(git:stash*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(wc:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(tree:*)",
+      "Bash(which:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(docker:compose*)",
+      "Bash(systemctl:status*)",
+      "Bash(journalctl:*)"
+    ],
+    "deny": [
+      "Bash(git:push*)",
+      "Bash(git:add -A*)",
+      "Bash(git:add .*)",
+      "Bash(rm:*)",
+      "Bash(sudo:*)",
+      "Bash(chmod:777*)",
+      "Bash(chown:*)",
+      "Bash(shutdown:*)",
+      "Bash(reboot:*)",
+      "Bash(mkfs:*)",
+      "Bash(dd:*)",
+      "Bash(:(){ :|:& };:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/block-danger"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/lint-check"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session-init"
+          }
+        ]
+      }
+    ]
+  }
+}

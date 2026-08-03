@@ -1,0 +1,17 @@
+# Patterns for files Claude Code should never access
+.env
+.env.*
+*.pem
+*.key
+credentials/
+secrets/
+*.tfstate
+*.tfvars
+**/node_modules/
+**/__pycache__/
+**/.git/
+**/target/
+**/dist/
+**/build/
+**/.venv/
+**/venv/

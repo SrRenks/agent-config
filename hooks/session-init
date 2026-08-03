@@ -1,0 +1,14 @@
+SESSION_DIR="$(pwd)/.ai"
+CONFIG="$HOME/.config/agent-config"
+
+if [ ! -e "$SESSION_DIR/agents.md" ]; then
+    ln -sfn "$CONFIG/AGENTS.md" "$SESSION_DIR/agents.md"
+fi
+
+for FILE in project.md session.md assumptions.md scratchpad.md; do
+    if [ ! -f "$SESSION_DIR/$FILE" ]; then
+        cp "$CONFIG/templates/$FILE" "$SESSION_DIR/$FILE"
+    fi
+done
+
+exit 0
