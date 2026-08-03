@@ -1,0 +1,434 @@
+#!/usr/bin/env bash
+# ai-context — Generate project context (.ai/context/) + README.md on demand.
+#
+# Dynamic by design: detects what is real in the current project and writes
+# only the files that apply — a project without a database gets no database.md
+# and no "Storage" row in README.md. Never copies generic templates; generated
+# files carry detected facts plus explicit open questions, never placeholders.
+#
+# Ownership:
+#   - .ai/context/index.md  machine-owned, refreshed every run (user notes go
+#                           in the topic files, not here)
+#   - topic files + README  created once if missing, never clobbered
+#   - --force               refreshes index.md + README.md only
+#
+# Usage: cd /path/to/project && ai-context [--force]
+set -euo pipefail
+
+CONFIG="$HOME/.config/agent-config"
+PROJECT="$(pwd)"
+CTX="$PROJECT/.ai/context"
+FORCE=0
+[ "${1:-}" = "--force" ] && FORCE=1
+
+say() { printf '%s\n' "$*"; }
+die() { say "error: $*" >&2; exit 1; }
+
+[ -d "$CONFIG" ] || die "agent-config not found at $CONFIG — run setup.sh first"
+if [ ! -d "$PROJECT/.ai" ]; then
+  say "  note: .ai/ is missing — run \`ai-init\` first (context generated anyway)"
+fi
+mkdir -p "$CTX"
+
+# ── Detection ─────────────────────────────────────────────────────────────
+
+detect_language() {
+  # include subproject manifests (Android modules, monorepo packages)
+  local gfiles
+  gfiles="$(find . -maxdepth 2 \( -name 'build.gradle.kts' -o -name 'build.gradle' -o -name 'settings.gradle.kts' -o -name 'settings.gradle' \) -not -path './.git/*' 2>/dev/null | tr '\n' ' ' || true)"
+  if [ -n "$gfiles" ] || [ -f gradlew ]; then
+    if [ -n "$gfiles" ] && grep -qi "android" $gfiles 2>/dev/null; then
+      echo "Kotlin (Android)"
+    elif [ -n "$gfiles" ] && grep -qi "kotlin" $gfiles 2>/dev/null; then
+      echo "Kotlin"
+    else
+      echo "Gradle (Java/Kotlin)"
+    fi
+  elif [ -f go.mod ]; then
+    echo "Go"
+  elif [ -f Cargo.toml ]; then
+    echo "Rust"
+  elif [ -f pyproject.toml ] || [ -f requirements.txt ] || [ -f setup.py ]; then
+    if [ -f manage.py ]; then
+      echo "Python (Django)"
+    elif grep -qi "fastapi" pyproject.toml requirements.txt 2>/dev/null; then
+      echo "Python (FastAPI)"
+    elif grep -qi "flask" pyproject.toml requirements.txt 2>/dev/null; then
+      echo "Python (Flask)"
+    else
+      echo "Python"
+    fi
+  elif [ -f package.json ]; then
+    if grep -qi '"next"' package.json 2>/dev/null; then
+      echo "Node.js (Next.js)"
+    elif grep -qi '"vue"' package.json 2>/dev/null; then
+      echo "Node.js (Vue)"
+    elif grep -qi '"react"' package.json 2>/dev/null; then
+      echo "Node.js (React)"
+    else
+      echo "Node.js"
+    fi
+  elif compgen -G "*.sln" >/dev/null || compgen -G "*.csproj" >/dev/null; then
+    echo "C# (.NET)"
+  else
+    echo "unknown"
+  fi
+  true
+}
+
+# Prints detected database markers (dependency tokens or marker paths), or nothing.
+detect_db() {
+  local files pat hits m
+  files=""
+  for f in settings.gradle.kts build.gradle.kts build.gradle pom.xml go.mod Cargo.toml pyproject.toml requirements.txt setup.py package.json; do
+    [ -f "$f" ] && files="$files $f"
+  done
+  # include subproject manifests (Android modules, monorepo packages)
+  files="$files $(find . -maxdepth 2 \( -name 'build.gradle.kts' -o -name 'build.gradle' -o -name 'pom.xml' \) -not -path './.git/*' 2>/dev/null | tr '\n' ' ' || true)"
+  pat='androidx\.room|room-runtime|exposed|hibernate|jpa|flyway|liquibase|sqlalchemy|django|alembic|psycopg|asyncpg|pymysql|peewee|prisma|sequelize|typeorm|knex|mongoose|better-sqlite3|gorm|sqlx|pgx|diesel|rusqlite|sea-orm|sqlite|postgres|mysql|mariadb|mongodb'
+  if [ -n "$files" ]; then
+    hits="$(grep -hioE "$pat" $files 2>/dev/null | sort -u | head -4 | tr '\n' ' ' || true)"
+    if [ -n "$hits" ]; then
+      echo "$hits"
+      return 0
+    fi
+  fi
+  for m in prisma migrations alembic db/schema.sql schema.sql; do
+    if [ -e "$m" ]; then
+      echo "$m"
+      return 0
+    fi
+  done
+  # bounded shallow source scan (build/vendor trees excluded)
+  grep -rioE --exclude-dir=.git --exclude-dir=.gradle --exclude-dir=node_modules \
+    --exclude-dir=build --exclude-dir=target --exclude-dir=.venv --exclude-dir=venv \
+    --include='*.kt' --include='*.java' --include='*.py' --include='*.go' --include='*.rs' --include='*.ts' \
+    "$pat" . 2>/dev/null | head -2 | sed -E 's#^.*:##' | sort -u | tr '\n' ' ' || true
+  true
+}
+
+# Prints names of external services/deps found in env/docker/CI/README files.
+detect_external() {
+  local files pat
+  files=""
+  for f in .env.example docker-compose.yml docker-compose.yaml compose.yml compose.yaml .github/workflows/*.yml README.md; do
+    [ -f "$f" ] && files="$files $f"
+  done
+  if [ -z "$files" ]; then
+    true
+    return
+  fi
+  pat='redis|postgres|postgresql|kafka|rabbitmq|minio|amazonaws|s3|stripe|sendgrid|twilio|openai|firebase|supabase|auth0|elasticsearch|mongodb|mariadb|mysql'
+  grep -hioE "$pat" $files 2>/dev/null | sort -u | head -6 | tr '\n' ' ' || true
+  true
+}
+
+# Prints local convention markers that exist in the repo.
+detect_conventions() {
+  local out=""
+  [ -d .githooks ] && out="$out .githooks/"
+  [ -f CONTRIBUTING.md ] && out="$out CONTRIBUTING.md"
+  [ -f .editorconfig ] && out="$out .editorconfig"
+  [ -f Makefile ] && out="$out Makefile"
+  [ -f justfile ] && out="$out justfile"
+  if [ -f docker-compose.yml ] || [ -f docker-compose.yaml ] || [ -f compose.yml ] || [ -f compose.yaml ]; then
+    out="$out docker-compose"
+  fi
+  echo "$out"
+  true
+}
+
+detect_git() {
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "no git repository"
+    true
+    return
+  fi
+  local n branch remote
+  n="$(git rev-list --count HEAD 2>/dev/null || echo 0)"
+  branch="$(git branch --show-current 2>/dev/null || echo '?')"
+  remote="$(git remote get-url origin 2>/dev/null || true)"
+  if [ -n "$remote" ]; then
+    remote="$(basename "$remote" .git)"
+    echo "$n commit(s) on $branch ($remote)"
+  else
+    echo "$n commit(s) on $branch"
+  fi
+  true
+}
+
+detect_maturity() {
+  local n src
+  n=0
+  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    n="$(git rev-list --count HEAD 2>/dev/null || echo 0)"
+  fi
+  # build-file signals, including subproject manifests
+  local bfiles
+  bfiles="$(find . -maxdepth 2 \( -name 'build.gradle.kts' -o -name 'build.gradle' -o -name 'settings.gradle.kts' -o -name 'go.mod' -o -name 'Cargo.toml' -o -name 'pyproject.toml' -o -name 'package.json' \) -not -path './.git/*' 2>/dev/null | head -1 || true)"
+  if [ "$n" -gt 0 ] || [ -n "$bfiles" ]; then
+    echo "EXISTING"
+    true
+    return
+  fi
+  src="$(find . -maxdepth 3 -type f \( -name '*.kt' -o -name '*.java' -o -name '*.py' -o -name '*.go' \
+    -o -name '*.rs' -o -name '*.ts' -o -name '*.js' \) \
+    ! -path './node_modules/*' ! -path './.git/*' 2>/dev/null | head -1 || true)"
+  if [ -n "$src" ]; then
+    echo "EXISTING"
+  else
+    echo "NEW"
+  fi
+  true
+}
+
+# ── Generation ────────────────────────────────────────────────────────────
+
+write_index() {
+  local target="$CTX/index.md"
+  local db ext conv topics missing
+  db="${DB_HITS:-none detected}"
+  ext="${EXT_HITS:-none detected}"
+  conv="${CONV_HITS:-none detected}"
+  topics=""
+  missing=""
+  for f in domain.md architecture.md database.md dependencies.md conventions.md; do
+    if [ -f "$CTX/$f" ]; then
+      topics+=$'\n- '"$f"
+    else
+      missing="$missing $f"
+    fi
+  done
+  cat > "$target" <<EOF
+# Project Context Index
+
+Machine-updated entry — the first thing an agent reads about this project.
+User/AI notes belong in the topic files below, not here. Run \`ai-context\`
+again after the project changes to refresh this index.
+
+## Snapshot
+- Maturity: $MATURITY
+- Stack: $LANG_LABEL
+- Database: $db
+- External services: $ext
+- Conventions: $conv
+- $GIT_INFO
+
+## Pointers
+- Rules: \`.ai/project.md\` — shared config: \`.ai/agents.md\`
+- State: \`.ai/session.md\` — decisions: \`.ai/assumptions.md\` — notes: \`.ai/scratchpad.md\`
+- Topic docs: \`.ai/context/\`$topics
+- Committed docs: \`docs/\` (repository-map.md, architecture.md)
+
+## Missing topic docs
+- Not yet generated:$missing
+- Resolve open questions with the user before changing anything you do not fully understand.
+
+## Status
+- Generated by ai-context on $(date +%Y-%m-%d).
+EOF
+  say "  wrote: .ai/context/index.md"
+}
+
+write_domain() {
+  local target="$CTX/domain.md"
+  if [ -f "$target" ]; then
+    say "  skip: .ai/context/domain.md exists"
+    return
+  fi
+  cat > "$target" <<'EOF'
+# Domain (Business Context)
+
+What this project is for, its business rules, and its vocabulary — the non-obvious
+knowledge a new engineer needs. Append confirmed facts as sections below and
+remove the questions once answered.
+
+## Open questions
+- What does this project do, and for whom?
+- What are the business rules / silent invariants?
+- Which domain terms have a non-obvious meaning?
+- What is deliberately out of scope?
+EOF
+  say "  created: .ai/context/domain.md"
+}
+
+write_architecture() {
+  local target="$CTX/architecture.md"
+  if [ -f "$target" ]; then
+    say "  skip: .ai/context/architecture.md exists"
+    return
+  fi
+  local committed=""
+  if [ -f "$PROJECT/docs/architecture.md" ]; then
+    committed="Committed design doc: \`docs/architecture.md\` — read it before touching core modules."
+  fi
+  cat > "$target" <<EOF
+# Architecture (Internal)
+
+How the system is structured and how data flows. $committed
+
+## Open questions
+- Which modules/components exist and how do they depend on each other?
+- Where does data enter, get processed, and get stored?
+- Which seams/extension points must not be broken?
+EOF
+  say "  created: .ai/context/architecture.md"
+}
+
+write_database() {
+  local target="$CTX/database.md"
+  if [ -f "$target" ]; then
+    say "  skip: .ai/context/database.md exists"
+    return
+  fi
+  cat > "$target" <<EOF
+# Database (Storage)
+
+Detected database signals: $DB_HITS
+Document the real schema and storage decisions here.
+
+## Open questions
+- Which DB engine, and where does the schema live (migrations, ORM, raw SQL)?
+- Which entities/tables exist and what are the key relationships?
+- Which invariants must never be violated (constraints, uniqueness, referential integrity)?
+- How are migrations applied and rolled back?
+EOF
+  say "  created: .ai/context/database.md"
+}
+
+write_dependencies() {
+  local target="$CTX/dependencies.md"
+  if [ -f "$target" ]; then
+    say "  skip: .ai/context/dependencies.md exists"
+    return
+  fi
+  cat > "$target" <<EOF
+# Dependencies (External)
+
+Detected external services/dependencies: $EXT_HITS
+Document what each one is for and why it exists.
+
+## Open questions
+- Which external services does this project depend on, and for what?
+- Which third-party libraries are load-bearing and why?
+- Which credentials/env vars are required locally, and where are they documented?
+EOF
+  say "  created: .ai/context/dependencies.md"
+}
+
+write_conventions() {
+  local target="$CTX/conventions.md"
+  if [ -f "$target" ]; then
+    say "  skip: .ai/context/conventions.md exists"
+    return
+  fi
+  cat > "$target" <<EOF
+# Conventions (Local)
+
+Detected local convention markers: $CONV_HITS
+Project-specific rules that differ from the shared config.
+
+## Open questions
+- Which git/commit conventions does this project follow beyond the shared ones?
+- Which code style / review / testing rules are local and non-obvious?
+- Which tooling quirks must a newcomer know?
+EOF
+  say "  created: .ai/context/conventions.md"
+}
+
+write_readme() {
+  local target="$PROJECT/README.md"
+  if [ -f "$target" ] && [ "$FORCE" -ne 1 ]; then
+    say "  skip: README.md exists (--force to regenerate)"
+    return
+  fi
+  local title desc tmp
+  title="$(git remote get-url origin 2>/dev/null | sed -E 's#.*[:/]([^/]+/[^/]+)(\.git)?$#\1#' || true)"
+  [ -z "$title" ] && title="$(basename "$PROJECT")"
+
+  desc="$LANG_LABEL project"
+  if [ "$MATURITY" = "NEW" ]; then
+    desc="New project — scaffolding in progress."
+  fi
+  [ -n "$DB_HITS" ] && desc="$desc. Storage: $DB_HITS"
+
+  tmp="$(mktemp)"
+  {
+    printf '# %s\n\n' "$title"
+    printf '%s\n\n' "$desc"
+
+    printf '## Stack\n\n| Layer | Technology |\n|---|---|\n'
+    printf '| Language | %s |\n' "$LANG_LABEL"
+    [ -n "$DB_HITS" ] && printf '| Storage | %s |\n' "$DB_HITS"
+    printf '\n'
+
+    printf '## Quick start\n\n'
+    case "$LANG_LABEL" in
+      *Gradle*|*Android*) printf '| Action | Command |\n|---|---|\n| Build | ./gradlew build |\n| Test | ./gradlew test |\n' ;;
+      Go*) printf '| Action | Command |\n|---|---|\n| Build | go build ./... |\n| Test | go test ./... |\n' ;;
+      Rust*) printf '| Action | Command |\n|---|---|\n| Build | cargo build |\n| Test | cargo test |\n' ;;
+      Python*) printf '| Action | Command |\n|---|---|\n| Test | pytest |\n' ;;
+      Node.js*) printf '| Action | Command |\n|---|---|\n| Install | npm install |\n| Test | npm test |\n' ;;
+      C#*) printf '| Action | Command |\n|---|---|\n| Build | dotnet build |\n| Test | dotnet test |\n' ;;
+      *) printf '| Action | Command |\n|---|---|\n| Build | _(fill in)_ |\n' ;;
+    esac
+    printf '\n'
+
+    printf '## Repository structure\n\n'
+    local found=0
+    for e in * .[^.]*; do
+      [ -e "$e" ] || continue
+      case "$e" in
+        .ai|.git|.gradle|.github|.idea|.kotlin|build|node_modules|target) continue ;;
+      esac
+      if [ -d "$e" ]; then
+        printf -- '- **%s/** — directory\n' "$e"
+        found=1
+      elif [ -f "$e" ]; then
+        printf -- '- %s — file\n' "$e"
+      fi
+    done
+    if [ "$found" -eq 0 ]; then
+      printf '_empty project — fill in as it grows._\n'
+    fi
+    printf '\n'
+
+    printf '## Status\n\n'
+    printf -- '- Maturity: %s (%s)\n' "$MATURITY" "$(date +%Y-%m-%d)"
+    printf -- '- Machine-generated overview — verify and fill in the description after onboarding.\n'
+  } > "$tmp"
+  mv "$tmp" "$target"
+  say "  wrote: README.md"
+}
+
+# ── Run ───────────────────────────────────────────────────────────────────
+
+MATURITY="$(detect_maturity)"
+LANG_LABEL="$(detect_language)"
+DB_HITS="$(detect_db | xargs)"
+EXT_HITS="$(detect_external | xargs)"
+CONV_HITS="$(detect_conventions | xargs)"
+GIT_INFO="$(detect_git)"
+
+say "=== ai-context: $(basename "$PROJECT") ==="
+say "  maturity: $MATURITY"
+say "  language/framework: ${LANG_LABEL:-unknown}"
+[ -n "$DB_HITS" ] && say "  database signals: $DB_HITS"
+[ -n "$EXT_HITS" ] && say "  external services: $EXT_HITS"
+[ -n "$CONV_HITS" ] && say "  conventions: $CONV_HITS"
+say "  $GIT_INFO"
+
+write_domain
+write_architecture
+if [ -n "$DB_HITS" ]; then write_database; else say "  note: no database detected — database.md skipped"; fi
+if [ -n "$EXT_HITS" ]; then write_dependencies; else say "  note: no external services detected — dependencies.md skipped"; fi
+if [ -n "$CONV_HITS" ]; then write_conventions; else say "  note: no local conventions detected — conventions.md skipped"; fi
+
+# index last: it reflects which topic files exist in this run
+write_index
+write_readme
+
+say ""
+say "Done. Context lives in .ai/context/ (index.md is machine-updated; topic"
+say "files are created once and filled in as knowledge is confirmed). README.md"
+say "is generated with only the sections that apply to this project."

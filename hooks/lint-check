@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# PostToolUse hook: runs after file edits
+# Auto-lints modified files and reports errors
+
+INPUT=$(cat)
+TOOL=$(echo "$INPUT" | jq -r '.tool_name // ""')
+
+# Only run after file writes
+if [ "$TOOL" != "write" ] && [ "$TOOL" != "edit" ]; then
+    exit 0
+fi
+
+FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // ""')
+[ -z "$FILE" ] && exit 0
+[ ! -f "$FILE" ] && exit 0
+
+# Determine linter by extension
+case "$FILE" in
+    *.py)
+        if command -v ruff &>/dev/null; then
+            OUTPUT=$(ruff check "$FILE" 2>&1)
+            if [ -n "$OUTPUT" ]; then
+                echo "{\"systemMessage\": \"Lint issues in $FILE:\\n$OUTPUT\"}" >&2
+            fi
+        fi
+        ;;
+    *.go)
+        if command -v go &>/dev/null; then
+            OUTPUT=$(go vet "$FILE" 2>&1)
+            if [ -n "$OUTPUT" ]; then
+                echo "{\"systemMessage\": \"Lint issues in $FILE:\\n$OUTPUT\"}" >&2
+            fi
+        fi
+        ;;
+    *.rs)
+        if command -v cargo &>/dev/null; then
+            OUTPUT=$(rustfmt --check "$FILE" 2>&1)
+            if [ -n "$OUTPUT" ]; then
+                echo "{\"systemMessage\": \"Format issues in $FILE:\\n$OUTPUT\"}" >&2
+            fi
+        fi
+        ;;
+esac
+
+exit 0
