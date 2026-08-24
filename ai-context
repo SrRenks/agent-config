@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# ai-context — Generate project context (.ai/context/) + README.md on demand.
+# ai-context - Generate project context (.ai/context/) + README.md on demand.
 #
 # Dynamic by design: detects what is real in the current project and writes
-# only the files that apply — a project without a database gets no database.md
+# only the files that apply - a project without a database gets no database.md
 # and no "Storage" row in README.md. Never copies generic templates; generated
 # files carry detected facts plus explicit open questions, never placeholders.
 #
@@ -24,9 +24,9 @@ FORCE=0
 say() { printf '%s\n' "$*"; }
 die() { say "error: $*" >&2; exit 1; }
 
-[ -d "$CONFIG" ] || die "agent-config not found at $CONFIG — run setup.sh first"
+[ -d "$CONFIG" ] || die "agent-config not found at $CONFIG - run setup.sh first"
 if [ ! -d "$PROJECT/.ai" ]; then
-  say "  note: .ai/ is missing — run \`ai-init\` first (context generated anyway)"
+  say "  note: .ai/ is missing - run \`ai-init\` first (context generated anyway)"
 fi
 mkdir -p "$CTX"
 
@@ -202,7 +202,7 @@ write_index() {
   cat > "$target" <<EOF
 # Project Context Index
 
-Machine-updated entry — the first thing an agent reads about this project.
+Machine-updated entry - the first thing an agent reads about this project.
 User/AI notes belong in the topic files below, not here. Run \`ai-context\`
 again after the project changes to refresh this index.
 
@@ -215,8 +215,8 @@ again after the project changes to refresh this index.
 - $GIT_INFO
 
 ## Pointers
-- Rules: \`.ai/project.md\` — shared config: \`.ai/agents.md\`
-- State: \`.ai/session.md\` — decisions: \`.ai/assumptions.md\` — notes: \`.ai/scratchpad.md\`
+- Rules: \`.ai/project.md\` - shared config: \`.ai/agents.md\`
+- State: \`.ai/session.md\` - decisions: \`.ai/assumptions.md\` - notes: \`.ai/scratchpad.md\`
 - Topic docs: \`.ai/context/\`$topics
 - Committed docs: \`docs/\` (repository-map.md, architecture.md)
 
@@ -239,7 +239,7 @@ write_domain() {
   cat > "$target" <<'EOF'
 # Domain (Business Context)
 
-What this project is for, its business rules, and its vocabulary — the non-obvious
+What this project is for, its business rules, and its vocabulary - the non-obvious
 knowledge a new engineer needs. Append confirmed facts as sections below and
 remove the questions once answered.
 
@@ -260,7 +260,7 @@ write_architecture() {
   fi
   local committed=""
   if [ -f "$PROJECT/docs/architecture.md" ]; then
-    committed="Committed design doc: \`docs/architecture.md\` — read it before touching core modules."
+    committed="Committed design doc: \`docs/architecture.md\` - read it before touching core modules."
   fi
   cat > "$target" <<EOF
 # Architecture (Internal)
@@ -348,7 +348,7 @@ write_readme() {
 
   desc="$LANG_LABEL project"
   if [ "$MATURITY" = "NEW" ]; then
-    desc="New project — scaffolding in progress."
+    desc="New project - scaffolding in progress."
   fi
   [ -n "$DB_HITS" ] && desc="$desc. Storage: $DB_HITS"
 
@@ -382,20 +382,20 @@ write_readme() {
         .ai|.git|.gradle|.github|.idea|.kotlin|build|node_modules|target) continue ;;
       esac
       if [ -d "$e" ]; then
-        printf -- '- **%s/** — directory\n' "$e"
+        printf -- '- **%s/** - directory\n' "$e"
         found=1
       elif [ -f "$e" ]; then
-        printf -- '- %s — file\n' "$e"
+        printf -- '- %s - file\n' "$e"
       fi
     done
     if [ "$found" -eq 0 ]; then
-      printf '_empty project — fill in as it grows._\n'
+      printf '_empty project - fill in as it grows._\n'
     fi
     printf '\n'
 
     printf '## Status\n\n'
     printf -- '- Maturity: %s (%s)\n' "$MATURITY" "$(date +%Y-%m-%d)"
-    printf -- '- Machine-generated overview — verify and fill in the description after onboarding.\n'
+    printf -- '- Machine-generated overview - verify and fill in the description after onboarding.\n'
   } > "$tmp"
   mv "$tmp" "$target"
   say "  wrote: README.md"
@@ -420,9 +420,9 @@ say "  $GIT_INFO"
 
 write_domain
 write_architecture
-if [ -n "$DB_HITS" ]; then write_database; else say "  note: no database detected — database.md skipped"; fi
-if [ -n "$EXT_HITS" ]; then write_dependencies; else say "  note: no external services detected — dependencies.md skipped"; fi
-if [ -n "$CONV_HITS" ]; then write_conventions; else say "  note: no local conventions detected — conventions.md skipped"; fi
+if [ -n "$DB_HITS" ]; then write_database; else say "  note: no database detected - database.md skipped"; fi
+if [ -n "$EXT_HITS" ]; then write_dependencies; else say "  note: no external services detected - dependencies.md skipped"; fi
+if [ -n "$CONV_HITS" ]; then write_conventions; else say "  note: no local conventions detected - conventions.md skipped"; fi
 
 # index last: it reflects which topic files exist in this run
 write_index

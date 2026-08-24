@@ -16,5 +16,5 @@ paths:
 - Tests must cover: happy path, error path, edge cases, regression scenarios.
 - Use table-driven tests in Go. Use parametrize in Python.
 - Mock external dependencies. Never call real APIs in unit tests.
-- Tests must be independent — no shared mutable state between tests.
+- Tests must be independent - no shared mutable state between tests.
 - If a test is flaky, fix the root cause. Do not skip or retry without investigation.

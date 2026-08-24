@@ -21,13 +21,13 @@ Do not add tests only to increase coverage numbers.
 - Run against a test environment (e.g., testcontainers).
 - Use a separate test database.
 
-## End‑to‑End Tests
+## End-to-End Tests
 - Test full user workflows from entry to exit.
 - Run only in CI, not during development.
 
 ## Test Conventions
 - Test files: `*_test.go`, `*.spec.js`, `test_*.py`.
-- Use table‑driven tests where possible.
+- Use table-driven tests where possible.
 - Name tests: `TestFunctionName_Scenario_ExpectedOutcome`.
 
 ## CI Commands

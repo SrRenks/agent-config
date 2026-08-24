@@ -10,7 +10,7 @@
 ## Managing Dependencies
 - Pin to exact versions or use lock files.
 - Regularly update dependencies (weekly/monthly).
-- Run `cargo‑deny`, `npm audit`, `govulncheck` in CI.
+- Run `cargo-deny`, `npm audit`, `govulncheck` in CI.
 
 ## Unused Dependencies
 - Remove unused dependencies to reduce attack surface.

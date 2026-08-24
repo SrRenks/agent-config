@@ -18,7 +18,7 @@ Document:
 ## Optimization Practices
 - Use batching over single operations.
 - Use connection pooling for databases.
-- Cache frequently accessed data (in‑memory or Redis).
+- Cache frequently accessed data (in-memory or Redis).
 - Use async/await or goroutines for I/O-bound tasks.
 - Optimize database queries with indexes.
 - Never trade maintainability for hypothetical performance gains.

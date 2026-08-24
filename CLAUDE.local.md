@@ -1,4 +1,4 @@
-# Personal preferences — not committed, not shared.
+# Personal preferences - not committed, not shared.
 # Loaded after CLAUDE.md. Override project conventions here.
 
 # Editor
@@ -11,7 +11,7 @@
 
 # Testing
 - Always run tests with `--verbose` flag.
-- If a test is flaky, fix the flakiness — don't skip it.
+- If a test is flaky, fix the flakiness - don't skip it.
 
 # Communication
 - Prefer terminal commands over GUI suggestions.

@@ -11,9 +11,9 @@ Use:
 
 Use `clippy` with these lints:
 
-- `clippy::too_many_lines` – function length (threshold: 60)
-- `clippy::too_many_arguments` – parameters (threshold: 4)
-- `clippy::result_unit_err` – keep error types meaningful
+- `clippy::too_many_lines` - function length (threshold: 60)
+- `clippy::too_many_arguments` - parameters (threshold: 4)
+- `clippy::result_unit_err` - keep error types meaningful
 
 Clippy does not currently enforce all repository complexity budgets.
 

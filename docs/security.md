@@ -2,7 +2,7 @@
 
 ## Authentication & Authorization
 - Use OAuth2/OIDC for user authentication.
-- Implement role‑based access control (RBAC).
+- Implement role-based access control (RBAC).
 - Validate permissions on every request.
 
 ## Input Validation
@@ -17,11 +17,11 @@
 
 ## Dependency Vulnerabilities
 - Regularly scan dependencies for CVEs.
-- Use tools like `cargo‑audit`, `npm audit`, `safety`.
+- Use tools like `cargo-audit`, `npm audit`, `safety`.
 - Apply security patches promptly.
 
 ## Logging & Monitoring
-- Log security‑relevant events (login, access changes).
+- Log security-relevant events (login, access changes).
 - Monitor for suspicious activity.
 
 ## Data Protection

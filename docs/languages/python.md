@@ -11,11 +11,11 @@ Use:
 
 Use `ruff` with rules that enforce complexity budgets and code smells. Enable:
 
-- `C901` – cyclomatic complexity (max 10)
-- `PLR0915` – too many statements (function length)
-- `PLR0912` – too many branches
-- `PLR0913` – too many arguments (max 4)
-- `RUF100` – unused noqa
+- `C901` - cyclomatic complexity (max 10)
+- `PLR0915` - too many statements (function length)
+- `PLR0912` - too many branches
+- `PLR0913` - too many arguments (max 4)
+- `RUF100` - unused noqa
 
 Example `pyproject.toml`:
 

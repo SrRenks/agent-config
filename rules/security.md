@@ -1,4 +1,4 @@
-# Security rules — applies to all files
+# Security rules - applies to all files
 # No path filter = loads everywhere
 
 - Never commit secrets, tokens, API keys, or passwords.

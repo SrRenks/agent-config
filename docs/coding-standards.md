@@ -56,10 +56,10 @@ Do not manually format code when an automatic formatter exists.
 
 To reduce nesting and improve readability:
 
-- Use guard clauses – handle invalid or edge conditions early and return/exit immediately.
-- Use early returns – Never use `else` blocks after a `return`, `break`, or `continue`.
-- Flatten conditionals – use positive conditions where possible, and do not deep nesting.
-- Do not use unnecessary `else` – if a previous branch returns, the `else` is redundant.
+- Use guard clauses - handle invalid or edge conditions early and return/exit immediately.
+- Use early returns - Never use `else` blocks after a `return`, `break`, or `continue`.
+- Flatten conditionals - use positive conditions where possible, and do not deep nesting.
+- Do not use unnecessary `else` - if a previous branch returns, the `else` is redundant.
 
 Example (good):
 
@@ -76,7 +76,7 @@ func process(data *Data) error {
 }
 ```
 
-Example (bad – deep nesting):
+Example (bad - deep nesting):
 ```
 func process(data *Data) error {
     if data != nil {
@@ -94,12 +94,12 @@ func process(data *Data) error {
 
 ## Comments
 
-Docstrings (or the language equivalent — Go doc comments, Rust `///` doc
+Docstrings (or the language equivalent - Go doc comments, Rust `///` doc
 comments) document every public module, function, method, and class.
 
 Comments are allowed only where a docstring cannot reach:
-- non-public methods — a comment describing what the method does
-- tricky or non-obvious implementation details — the why, a constraint, a
+- non-public methods - a comment describing what the method does
+- tricky or non-obvious implementation details - the why, a constraint, a
   tradeoff, or a compensation that is not caller-facing
 
 Never write comments that merely describe the code. Caller-facing API
@@ -111,7 +111,7 @@ Python: Google-style docstrings (Google Python Style Guide).
 
 - Summary: one descriptive line, ends with a period.
 - Blank line, then sections as needed: `Args:`, `Returns:`, `Raises:`,
-  `Examples:` — each argument on its own indented `name: description` line.
+  `Examples:` - each argument on its own indented `name: description` line.
 
 ```python
 def connect(host: str, timeout: float = 5.0) -> Connection:
@@ -129,7 +129,7 @@ def connect(host: str, timeout: float = 5.0) -> Connection:
     """
 ```
 
-- Go: standard Go doc comments (`go.dev/doc/comment`) — begin with the
+- Go: standard Go doc comments (`go.dev/doc/comment`) - begin with the
   identifier name, sentence-style.
 - Rust: rustdoc `///` with the standard sections (`# Panics`, `# Errors`,
   `# Examples`, `# Safety`).
@@ -179,7 +179,7 @@ For new features, include logs, metrics, tracing, and error context.
 - Never introduce a design pattern without a concrete problem.
 - Never rewrite working code during feature changes.
 - Do not add dependencies if the standard library solves the problem.
-- Complex code is agent drag — expensive for both humans and AI agents. Code
+- Complex code is agent drag - expensive for both humans and AI agents. Code
   that is ergonomic for AI is also better for humans.
 
 ## Refactoring Rules

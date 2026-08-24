@@ -2,7 +2,7 @@
 
 ## Rationale
 
-Complex code is agent drag — it is expensive for both humans and AI agents to
+Complex code is agent drag - it is expensive for both humans and AI agents to
 navigate, understand, and modify. Studies of AI-assisted repositories show
 cognitive complexity rising by ~41% across iterations unless explicitly
 controlled. These budgets counteract that drift.
@@ -39,10 +39,10 @@ Document the reason whenever a limit is exceeded.
 ## Enforcement
 - CI should warn or reject violations depending on severity.
 - Complexity exceptions are acceptable when documented and justified.
-- CI should run language‑native quality tooling (see `docs/languages/*.md` for detailed configuration). Use linters that enforce complexity budgets, nesting limits, and duplication detection.
+- CI should run language-native quality tooling (see `docs/languages/*.md` for detailed configuration). Use linters that enforce complexity budgets, nesting limits, and duplication detection.
 - If complexity is unavoidable, document why and get approval.
 
-## Repository‑Level Complexity
+## Repository-Level Complexity
 
 Even if individual functions stay within limits, the repository as a whole can degrade over time. Therefore:
 
@@ -50,4 +50,4 @@ Even if individual functions stay within limits, the repository as a whole can d
 - Large architectural changes that increase complexity must be broken into smaller, reviewable changes, and each must include a plan to refactor existing code to keep overall complexity stable or reduced.
 - Use CI to track aggregate complexity metrics (e.g., sum of cognitive complexity across all functions). If the total increases by more than 5% in a single PR, the PR should include a justification.
 
-Rationale: This prevents the “death by a thousand cuts” – many small, individually acceptable changes that accumulate into an unmaintainable codebase.
+Rationale: This prevents the "death by a thousand cuts" - many small, individually acceptable changes that accumulate into an unmaintainable codebase.

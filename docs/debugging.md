@@ -20,7 +20,7 @@
 - Add a regression test to prevent reoccurrence.
 - Update documentation if behavior changes.
 
-## Post‑Mortem
+## Post-Mortem
 - Document the root cause.
 - Share learnings with the team.
 - Improve tests and monitoring.

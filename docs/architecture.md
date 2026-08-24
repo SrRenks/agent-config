@@ -22,7 +22,7 @@
 - Message Queue: [e.g., RabbitMQ, Kafka]
 
 ## External Dependencies
-- [List critical third‑party services or libraries.]
+- [List critical third-party services or libraries.]
 
 ## Ownership Boundaries
 
@@ -39,7 +39,7 @@ To preserve modularity and prevent architecture erosion, the following dependenc
 
 - Presentation layer (CLI/API/UI) may depend on Application and Domain, but not on Infrastructure directly.
 - Application layer may depend on Domain and Infrastructure (via interfaces), but not on Presentation.
-- Domain layer must not depend on Infrastructure or Presentation – it is the core, independent of frameworks.
+- Domain layer must not depend on Infrastructure or Presentation - it is the core, independent of frameworks.
 - Infrastructure layer may depend on Domain and Application (to implement interfaces), but not on Presentation.
 
 Forbidden examples:
