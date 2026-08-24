@@ -2,11 +2,8 @@
 
 ## General Principles
 
-- Write readable code. Do not write clever code.
 - Follow the established conventions of the language ecosystem.
-- Keep responsibilities separated.
 - Do not create abstractions without justification.
-- Make behavior explicit. Do not use hidden magic.
 - When multiple implementations are correct, choose the one that:
     - minimizes complexity
     - minimizes dependencies
@@ -97,12 +94,45 @@ func process(data *Data) error {
 
 ## Comments
 
-Comments should explain:
-- why something exists
-- non-obvious constraints
-- important tradeoffs
+Docstrings (or the language equivalent — Go doc comments, Rust `///` doc
+comments) document every public module, function, method, and class.
 
-Do not write comments that merely describe the code.
+Comments are allowed only where a docstring cannot reach:
+- non-public methods — a comment describing what the method does
+- tricky or non-obvious implementation details — the why, a constraint, a
+  tradeoff, or a compensation that is not caller-facing
+
+Never write comments that merely describe the code. Caller-facing API
+documentation belongs in the docstring, not in comments.
+
+## Docstrings
+
+Python: Google-style docstrings (Google Python Style Guide).
+
+- Summary: one descriptive line, ends with a period.
+- Blank line, then sections as needed: `Args:`, `Returns:`, `Raises:`,
+  `Examples:` — each argument on its own indented `name: description` line.
+
+```python
+def connect(host: str, timeout: float = 5.0) -> Connection:
+    """Opens a connection to host.
+
+    Args:
+        host: Hostname or IP address to connect to.
+        timeout: Connection timeout in seconds.
+
+    Returns:
+        An open Connection object.
+
+    Raises:
+        TimeoutError: If the connection is not established within timeout.
+    """
+```
+
+- Go: standard Go doc comments (`go.dev/doc/comment`) — begin with the
+  identifier name, sentence-style.
+- Rust: rustdoc `///` with the standard sections (`# Panics`, `# Errors`,
+  `# Examples`, `# Safety`).
 
 ## Logging
 
