@@ -1,13 +1,13 @@
 # <Topic>
 
-Convention doc — one topic per file. Imperative, lean, project-specific.
+Convention doc - one topic per file. Imperative, lean, project-specific.
 Template: `~/.config/agent-config/templates/convention-doc.md`
 
 ## Purpose
 <!-- One sentence: what this doc governs, and why it exists. Delete this comment. -->
 
 ## Rules
-<!-- Imperative bullets only — "Do X." / "Never Y."
+<!-- Imperative bullets only - "Do X." / "Never Y."
      Include only what the agent cannot infer from the code itself.
      No placeholders, no generic filler. Delete this comment. -->
 

@@ -12,8 +12,8 @@
 [State the chosen option and rationale.]
 
 ## Options considered
-- Option A — rationale for/against
-- Option B — rationale for/against
+- Option A - rationale for/against
+- Option B - rationale for/against
 
 ## Consequences
 What becomes easier? What becomes harder? Risks and trade-offs.

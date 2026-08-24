@@ -27,7 +27,7 @@ Do not add tests only to increase coverage numbers.
 
 ## Test conventions
 - Test files: `*_test.go`, `*.spec.js`, `test_*.py`.
-- Use table‑driven tests where possible.
+- Use table-driven tests where possible.
 - Name tests: `TestFunctionName_Scenario_ExpectedOutcome`.
 
 ## CI commands

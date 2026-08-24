@@ -2,7 +2,7 @@
 
 # Documentation
 
-<project-name> documentation — table of contents.
+<project-name> documentation - table of contents.
 
 ## Tutorials
 

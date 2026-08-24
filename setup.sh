@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# setup.sh — Install agent-config globally
+# setup.sh - Install agent-config globally
 # Run once. Creates symlinks from ~/.config/agent-config/ to agent paths.
 set -euo pipefail
 
@@ -26,7 +26,7 @@ symlink() {
 
 echo "=== agent-config setup ==="
 
-# Claude Code — all 5 layers of the hierarchy
+# Claude Code - all 5 layers of the hierarchy
 symlink "$SRC/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 symlink "$SRC/CLAUDE.local.md" "$HOME/.claude/CLAUDE.local.md"
 symlink "$SRC/settings.json" "$HOME/.claude/settings.json"

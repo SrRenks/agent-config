@@ -1,6 +1,6 @@
 # agent-config
 
-Shared AI agent behavior configuration — a single source of truth for how
+Shared AI agent behavior configuration - a single source of truth for how
 coding agents (Claude Code, Cursor, CodeCompanion, Gemini CLI, Codex, and
 others) should behave across all your projects.
 
@@ -47,10 +47,10 @@ ai-init      # creates .ai/ with symlink + skeleton files
 ai-context   # detects stack, db, deps, conventions; generates context + README
 ```
 
-- `ai-init` — sets up `.ai/agents.md` (symlink to shared config), skeleton
+- `ai-init` - sets up `.ai/agents.md` (symlink to shared config), skeleton
   memory files (`project.md`, `session.md`, `assumptions.md`, `scratchpad.md`),
   and a `.gitignore` entry. Detects project maturity (NEW vs EXISTING).
-- `ai-context` — detects language, framework, database, external services, and
+- `ai-context` - detects language, framework, database, external services, and
   local conventions; generates `.ai/context/` topic files and `README.md`.
   Only generates files that apply (no database.md without a database).
 
@@ -68,9 +68,9 @@ ai-context   # detects stack, db, deps, conventions; generates context + README
 ├── ai-init                # per-project .ai/ initialization script
 ├── ai-context             # on-demand context + README generator
 ├── commands/              # Claude Code slash commands
-│   ├── ci.md              # /ci — run full CI pipeline locally
-│   ├── review.md          # /review — review pending changes
-│   └── ship.md            # /ship — prepare and commit
+│   ├── ci.md              # /ci - run full CI pipeline locally
+│   ├── review.md          # /review - review pending changes
+│   └── ship.md            # /ship - prepare and commit
 ├── hooks/                 # Claude Code hooks (PreToolUse, PostToolUse, SessionStart)
 │   ├── block-danger       # blocks rm -rf, sudo, git push --force, etc.
 │   ├── lint-check         # auto-lints files after edits
@@ -117,7 +117,7 @@ ai-context   # detects stack, db, deps, conventions; generates context + README
 - **Shared config is read-only.** Agents never edit `~/.config/agent-config/`.
   Project-specific rules go in `.ai/project.md` and `.ai/docs/`.
 - **No templates copied into projects.** `ai-context` generates context files
-  and README.md dynamically based on what it detects — no generic filler.
+  and README.md dynamically based on what it detects - no generic filler.
 - **`.ai/` is never committed.** Per-project agent knowledge stays local.
 - **Symlinks propagate updates.** When the shared config is updated (git pull),
   all projects pick up the changes immediately through the `.ai/agents.md`

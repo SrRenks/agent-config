@@ -25,15 +25,15 @@ Only commands that are known to exist in this project.
 | Run | <only if a run command is known> |
 
 ## Repository structure
-Real top-level entries — no invented directories.
-- **app/** — <purpose>
-- **docs/** — project documentation (start at `docs/index.md`)
+Real top-level entries - no invented directories.
+- **app/** - <purpose>
+- **docs/** - project documentation (start at `docs/index.md`)
 
 ## Status
 - Maturity: NEW / EXISTING (generated date)
 - What works, what is next. Filled in as the project evolves.
 
 Principles (from `docs/project-docs.md`):
-- Enterprise overview only — surface level by design; deep docs live in `docs/`.
+- Enterprise overview only - surface level by design; deep docs live in `docs/`.
 - Human-facing markdown (full markdown, tables where they clarify).
 - No placeholders in the final file: unknown facts become open questions, not `<...>`.

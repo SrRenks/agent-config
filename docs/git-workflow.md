@@ -4,29 +4,29 @@ Generic, production-grade Git conventions for every project.
 Project-specific deviations go in the project's `.ai/docs/git-workflow.md` (local-only) and override this file.
 
 ## Branch model
-- `main` — always green, protected. No direct pushes; every change lands via a pull request.
+- `main` - always green, protected. No direct pushes; every change lands via a pull request.
 - Short-lived branches off `main`, named `<type>/<slug>`: `feat/...`, `fix/...`, `chore/...`, `docs/...`, `test/...`, `refactor/...`, `ci/...`.
 - Delete branches after merge. Never reuse a merged branch.
 
-## Commits — conventional and atomic
-- Format: `<type>(<scope>): <subject>` — types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`, `build`, `ci`, `revert`.
+## Commits - conventional and atomic
+- Format: `<type>(<scope>): <subject>` - types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`, `build`, `ci`, `revert`.
 - Subject: imperative mood, lowercase, ≤ 72 chars, no trailing period.
 - Body explains the *why* (and references decisions/issue IDs when relevant).
 - Atomic: one logical change per commit; each commit compiles, passes tests, and is independently reviewable.
-- Never `git add -A` / `git add .` — stage explicit files only.
+- Never `git add -A` / `git add .` - stage explicit files only.
 
 ## Pull requests & merge
 - Open the PR early.
 - PR title = the squash-commit subject, in conventional format:
-  `<type>(<scope>): <subject>` — imperative, lowercase, ≤ 72 chars, no
+  `<type>(<scope>): <subject>` - imperative, lowercase, ≤ 72 chars, no
   trailing period.
-- PR description — three sections:
-  - What — what changed and why (commit-body content, decisions, issue IDs).
-  - How — how it was verified (tests, lint, manual checks).
-  - Notes — anything the reviewer needs: breaking changes, migration steps, follow-ups.
+- PR description - three sections:
+  - What - what changed and why (commit-body content, decisions, issue IDs).
+  - How - how it was verified (tests, lint, manual checks).
+  - Notes - anything the reviewer needs: breaking changes, migration steps, follow-ups.
   - Create with `gh pr create` (via lazygit or the shell); it fills the title and body interactively.
 - CI must pass before merge: build + lint + tests.
-- Squash-merge to `main` — keeps main linear and `git bisect`-friendly.
+- Squash-merge to `main` - keeps main linear and `git bisect`-friendly.
 - Delete the branch after merge.
 
 ## Issue format
@@ -44,16 +44,16 @@ Project-specific deviations go in the project's `.ai/docs/git-workflow.md` (loca
 ## CI
 - Every push to `main` and every PR targeting `main` runs the pipeline (build, lint, test) as the merge gate.
 
-## Tooling — lazygit + GitHub CLI
+## Tooling - lazygit + GitHub CLI
 - Standardize the git workflow on lazygit + gh when available:
   - Prefer `lazygit` for interactive git: staging, committing, branches, merges, history review.
   - Prefer `gh` for everything remote: pull requests (`gh pr create`, `gh pr view`, `gh pr checks`), releases (`gh release create`), issues.
   - Drive `gh` from inside lazygit via custom commands (`customCommands` in lazygit config), so branch → commit → PR → merge is one flow. Without custom commands, run `gh` in the same repo from the shell.
-  - Stage explicit files only — never "stage all" (`git add -A` / `git add .`), including in lazygit.
+  - Stage explicit files only - never "stage all" (`git add -A` / `git add .`), including in lazygit.
 - Availability gate: use each tool only if installed AND working (`gh auth status` for gh). If missing or unauthenticated, fall back to plain `git` + the GitHub web UI. Never block work on tool availability.
 
 ## Releases
-- Tag `main` with semantic versions: `v0.1.0`, `v0.2.0`, …
+- Tag `main` with semantic versions: `v0.1.0`, `v0.2.0`, ...
 - Changelog derived from conventional commit subjects (tooling when the first release is cut).
 
 ## History hygiene

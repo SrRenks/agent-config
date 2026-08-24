@@ -7,7 +7,7 @@ Run before declaring any task complete. Tick all that apply.
 ## Build and tests
 - [ ] Build passes with zero errors.
 - [ ] All tests pass.
-- [ ] Lint — no new warnings introduced by the change.
+- [ ] Lint - no new warnings introduced by the change.
 
 ## Code quality
 - [ ] Complexity budgets met: cyclomatic ≤10, cognitive ≤15, params ≤4, nesting ≤3, lines/function ≤60, file ≤500.
