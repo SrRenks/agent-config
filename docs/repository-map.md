@@ -15,7 +15,7 @@ This config is READ-ONLY for agents. Projects do not copy it: `ai-init` creates 
 
 ## Reference library — `docs/`
 Shared across all projects; read on demand (AGENTS.md §3). Never copied into a project — a project's `docs/` holds project docs only.
-- `architecture.md`, `coding-standards.md`, `testing.md`, `security.md`, `complexity.md`, `coupling.md`, `debugging.md`, `maintainability.md`, `performance.md`, `development-workflow.md`, `validation-checklist.md`, `dependency-policy.md`, `git-workflow.md`
+- `architecture.md`, `coding-standards.md`, `testing.md`, `security.md`, `complexity.md`, `coupling.md`, `debugging.md`, `maintainability.md`, `performance.md`, `development-workflow.md`, `validation-checklist.md`, `dependency-policy.md`, `git-workflow.md`, `onboarding.md`
 - `ai-directory.md` — the `.ai/` structure standard (files, names, creation rules)
 - `project-docs.md` — the committed docs/ + README standard (templates, naming, workflow)
 - `repository-map.md` — this file

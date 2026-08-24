@@ -19,7 +19,7 @@
 2. This file is the shared config, symlinked into every project as `.ai/agents.md`.
 3. On first entry, classify the project:
    - NEW — empty, scaffold-only, no build history. Propose `ai-init`, fill `.ai/project.md` and project context, then plan the build-out.
-   - EXISTING — has source, build files, or commit history. Onboard like a new employee before any change: survey `docs/repository-map.md` and `.ai/context/index.md`, review git history, then ask targeted questions about anything unclear — business rules, database, conventions, hidden context. Never re-create, restructure, or "improve" what already works.
+   - EXISTING — has source, build files, or commit history. Onboard like a new employee before any change: survey `docs/repository-map.md` and `.ai/context/index.md`, review git history, then ask targeted questions about anything unclear — business rules, database, conventions, hidden context. Follow the full procedure in `~/.config/agent-config/docs/onboarding.md`. Never re-create, restructure, or "improve" what already works.
 4. Read state before acting: `.ai/session.md` (current state), `.ai/assumptions.md` (decision log), `.ai/scratchpad.md` (working notes), `.ai/context/index.md` (project knowledge base — domain, architecture, database, dependencies, conventions).
 5. Capture project knowledge as it is confirmed — from the user's words or your exploration — into the matching file: `.ai/context/domain.md` (purpose, business rules, glossary), `database.md` (schema, storage), `dependencies.md` (external services), `conventions.md` (local rules), `.ai/project.md` (stack, build/test, conventions), `.ai/assumptions.md` (decisions). Replace the open questions in the topic files with the confirmed facts. Never put facts in `.ai/context/index.md` — it is machine-owned.
 6. Consult `.ai/context/` and `.ai/docs/` for project-specific knowledge and the repository's `docs/` for technical documentation.
@@ -54,6 +54,7 @@
 ## Section 3: Reference docs — shared, read on demand
 Read on demand; never copy them into projects.
 - `.ai/` structure: `~/.config/agent-config/docs/ai-directory.md`
+- Onboarding: `~/.config/agent-config/docs/onboarding.md`
 - Project docs standard: `~/.config/agent-config/docs/project-docs.md`
 - Git/Commits: `~/.config/agent-config/docs/git-workflow.md`
 - Architecture: `~/.config/agent-config/docs/architecture.md`
@@ -95,3 +96,8 @@ Read on demand; never copy them into projects.
   - Rationale: pre-approved in codecompanion (silent — no approval prompts), scoped/bounded output, respects gitignore.
 - Use `run_command` only when no dedicated tool exists: `ls`/`find` listings outside the CWD, git operations beyond diff, builds/tests, system inspection.
 - Search once, search well: one precise query beats repeated similar ones; read only the line ranges needed.
+- Web search (`web_search`) is a last resort, not a first move:
+  - Consult local sources first: this config's `docs/`, `.ai/context/`, `.ai/docs/`, the repo's `docs/`, and files already read.
+  - Use `web_search` only for what local sources cannot answer: current versions/changelogs of external dependencies, upstream breaking changes, official API docs, and errors that require external knowledge.
+  - Never use `web_search` for: project conventions or formatting rules defined in this config, markdown/config structure (use `~/.config/agent-config/templates/` and the docs), or to backfill facts you do not actually know.
+  - Cite the source and retrieval date for any fact taken from the web.
