@@ -29,6 +29,18 @@ Project-specific deviations go in the project's `.ai/docs/git-workflow.md` (loca
 - Squash-merge to `main` — keeps main linear and `git bisect`-friendly.
 - Delete the branch after merge.
 
+## Card format
+- Use this format for PR descriptions that close a tracked ticket. The card body doubles as the squash-commit body.
+- First line: `Card: <owner>/<repo>#<number>`.
+- Second line: summary, imperative mood, lowercase. Names the change and the ticket or advisory it closes.
+- Then the sections, in order:
+  - `Context`: root cause, dependency chain, and the advisory or issue ranges affected.
+  - `What changes`: exact file and override added, plus before/after versions.
+  - `Impact`: what else changed or did not change; list anything else touched.
+  - `Validation`: commands run and the expected output.
+  - `Notes`: `N/A` when empty.
+- Keep each section terse; lead with facts. For PRs without a tracked ticket, use the generic three-section description above instead.
+
 ## CI
 - Every push to `main` and every PR targeting `main` runs the pipeline (build, lint, test) as the merge gate.
 
