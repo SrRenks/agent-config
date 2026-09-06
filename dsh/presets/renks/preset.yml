@@ -1,0 +1,3 @@
+name: Renks
+description: CodeCompanion migration preset — standard coding agent plus full AGENTS.md rules injection and Plan/Onboard/Context/Review/CI/Ship skills.
+order: 5
