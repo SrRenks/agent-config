@@ -59,6 +59,7 @@ Read on demand; never copy them into projects. Paths below are relative to `~/.c
 - Development workflow: `core/docs/development-workflow.md`
 - Validation checklist: `core/docs/validation-checklist.md`
 - Evals (retained task set for config changes): `core/docs/evals.md`
+- Sources and evidence: `core/docs/sources.md`
 - Git/Commits: `core/docs/git-workflow.md`
 - Architecture: `core/docs/architecture.md`
 - Code Style: `core/docs/coding-standards.md`

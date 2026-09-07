@@ -52,6 +52,7 @@ Templates:
 5. New rule: nothing else needed (auto-loaded by Claude Code and Cursor).
 6. Preset changes: follow the agents/dsh/presets/renks/README.md patch flow; run the retained eval set (core/docs/evals.md) before changing defaults.
 7. Commit: conventional message, plain wording, explicit files only, never git add -A. Wait for human approval before committing (AGENTS.md section 1 rule 8).
+8. New behavioral rule or numeric threshold: add its source to core/docs/sources.md in the same commit; label it community practice if no source exists.
 
 ## Validation before finishing
 - Scripts: bash -n <file>.

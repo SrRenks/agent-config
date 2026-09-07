@@ -28,6 +28,7 @@ Shared across all projects; read on demand (AGENTS.md §3). Never copied into a 
 - `project-docs.md` - the committed docs/ + README standard (templates, naming, workflow)
 - `repository-map.md` - this file
 - `agent-config-authoring.md` - the spec for extending this repo (rules, skills, docs, templates, bridges)
+- `sources.md` - provenance of rules, design choices, and thresholds (primary sources, internal evals, community practice)
 - `decisions/` - ADR template
 - `languages/` - go, kotlin, python, rust
 
