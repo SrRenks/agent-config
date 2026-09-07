@@ -1,3 +1,10 @@
+#!/usr/bin/env bash
+# session-init - OPT-IN hook (2026-09: no longer wired in settings.json).
+# Mirrors `ai-init` silently; it was removed from SessionStart because it
+# created .ai/ wherever Claude Code started, surprising users who chose not
+# to init. To re-enable, add to ~/.claude/settings.json:
+#   "SessionStart": [{ "matcher": "", "hooks": [{ "type": "command", "command": "~/.claude/hooks/session-init" }] }]
+# Prefer running `ai-init` explicitly in a project instead.
 SESSION_DIR="$(pwd)/.ai"
 CONFIG="$HOME/.config/agent-config"
 
