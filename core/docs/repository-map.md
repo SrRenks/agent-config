@@ -13,9 +13,11 @@ This config is READ-ONLY for agents. Projects do not copy it: `ai-init` creates 
 - `ai-init` - creates the project's `.ai/` directory (agents.md symlink, project.md, memory files, docs/) and gitignores it. → `~/.local/bin/ai-init`.
 - `setup.sh` - one-time global install (creates the `~/.claude`, `~/.codex`, `~/.gemini`, `~/.agents` links).
 
-## DSH integration - `dsh/`
-- `dsh/presets/renks/` - the DEFAULT preset (mirrors the live roster `~/.dsh/.agent-presets/renks/`). Evidence-based instruction delivery: no full AGENTS.md digest and no skill-catalog injection; `instruction-hint.mjs` injects one "read the instruction files" hint after the first tool call, and `skill-search.mjs` exposes `skill_search`/`skill_load`. Scale policy: search/load stays the default as the catalog grows; do not re-add catalog injection beyond ~3-5 skills.
-- `dsh/skills/` - DSH skills (plan, onboard, context, review, ci, ship), symlinked to `~/.dsh/skills` for discovery by dsh-skill-filesystem.
+## Tool integrations - `agents/`
+- `agents/dsh/presets/renks/` - the DEFAULT dsh preset (mirrors the live roster `~/.dsh/.agent-presets/renks/`). Evidence-based instruction delivery: no full AGENTS.md digest and no skill-catalog injection; `instruction-hint.mjs` injects one "read the instruction files" hint after the first tool call, and `skill-search.mjs` exposes `skill_search`/`skill_load`. Scale policy: search/load stays the default as the catalog grows; do not re-add catalog injection beyond ~3-5 skills.
+- `agents/claude-code/` - CLAUDE.md, settings.json, hooks, rules, commands (commands symlink to `skills/`).
+- `agents/gemini/` - GEMINI.md wrapper.
+- `skills/` - shared procedures (plan, onboard, context, review, ci, ship), symlinked to both `~/.dsh/skills` and `~/.claude/skills`.
 - The experimental `liangshen` preset (minimal-bootstrap anchoring) lives in `~/.dsh/.agent-presets/liangshen/` and is not tracked here.
 
 ## Reference library - `docs/`
