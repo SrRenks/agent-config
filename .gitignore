@@ -1,2 +1,5 @@
 # Generated at setup time - contains backups of overwritten files
 backups/
+
+# Retained eval runs (see docs/evals.md) - local measurement data, not config
+evals/

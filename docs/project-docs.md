@@ -17,8 +17,8 @@ Apply these principles when creating or modifying any committed doc.
   that points to separate files for detailed content.
 - Never embed full architecture docs, full testing strategy, or full style guides
   in AGENTS.md. Link to them.
-- ETH Zurich research (2026): auto-generated context files filled with generic
-  information the model already knows can hurt agent performance. Review and
+- ETH Zurich research (Gloaguen et al., "Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?", arXiv:2602.11988, Feb 2026; retrieved 2026-09-06): auto-generated context files filled with generic
+  information the model already knows can hurt agent performance (developer-written files +4% success, LLM-generated -3%, +20-23% inference cost either way). Review and
   prune auto-generated content - remove what the agent can infer.
 - Start AGENTS.md with build/test commands - the most important information first.
 - Six areas an effective AGENTS.md covers: commands, testing practices, project
@@ -952,7 +952,8 @@ jobs:
 - Build a mental model from architecture docs before proposing changes.
 - Cache roadmap items for contextualizing suggestions.
 - Warning: auto-generated context filled with generic information the model
-  already knows can hurt agent performance (ETH Zurich, 2026). Review and prune
+  already knows can hurt agent performance (Gloaguen et al., ETH Zurich,
+  arXiv:2602.11988, Feb 2026; retrieved 2026-09-06). Review and prune
   auto-generated content. Remove what the agent can infer from the code itself.
 - Every line in AGENTS.md is sent with every prompt - keep it lean. Dilution is
   the enemy of signal.

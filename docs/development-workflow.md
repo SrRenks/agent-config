@@ -5,11 +5,11 @@ Based on the Research → Plan → Implement methodology, structured as Analysis
 ## Analysis Phase (Before Coding)
 1. Survey - inspect repository structure, README, build config
 2. Understand - identify affected components and dependencies
-3. Plan - create a numbered implementation plan before writing any code
+3. Plan - for multi-file or uncertain work, create a numbered implementation plan before writing any code. Skip the written plan when the change fits a one-sentence diff.
 4. Document assumptions - in `.ai/assumptions.md` (Declared Intent + Desired Output)
 5. Define success criteria - explicit, verifiable outcomes, not "make it work"
 
-### Gate: Plan must be approved before proceeding to implementation.
+### Gate: For multi-file or uncertain work, the plan must be approved before proceeding to implementation. Trivial one-sentence diffs skip the plan but still go through the review gates below.
 
 ## Implementation Phase
 1. Surgical changes - touch only lines related to the task; no drive-by refactoring
@@ -28,14 +28,17 @@ Based on the Research → Plan → Implement methodology, structured as Analysis
 ### Review Phase (After Coding)
 1. Self-review - review your own diff for unintended changes
 2. Working code is a first draft - after tests go green, do one ruthless edit of your own diff. Remove unnecessary abstractions, dead code, debug artifacts, speculative generality.
-3. Verification gates - run through `docs/validation-checklist.md`:
+3. Fresh-context review - delegate the diff to a subagent (or second session) that does not share this conversation; it hunts for bugs, overreach, missing tests, unintended changes; fix valid findings.
+4. Verification gates - run through `docs/validation-checklist.md`:
    - ☐ Tests pass
    - ☐ Linters pass
    - ☐ Complexity budgets met (document exceptions)
    - ☐ No new dependencies without approval
    - ☐ Docs updated if behavior changed
    - ☐ No unintended changes in diff
-4. Get approval - show draft, get OK, then commit
+   - ☐ Fresh-context review clean
+5. Get approval - show draft, get OK, then commit
+6. Close the memory loop - update `.ai/session.md` and append decisions to `.ai/assumptions.md` (see the `context` skill).
 
 ## Commit Rules
 - Never `git add -A` - stage explicit file paths only
@@ -47,6 +50,10 @@ Based on the Research → Plan → Implement methodology, structured as Analysis
 - Complexity exceptions: documented with a justification in the commit
 - Breaking changes: documented with a migration plan
 - New dependencies: approved and justified (see `docs/dependency-policy.md`)
+
+## Config Changes (presets, AGENTS.md, skills)
+- Before changing the default dsh preset or the shared rules, run the retained eval set in `docs/evals.md` (anchor checks + task set) and compare success-rate-per-cost, not token counts.
+- Never tune against public-benchmark scores; prefer self-hosted tasks.
 
 ## Key Principles (from AGENTS.md)
 - Think before coding - plan first, code second
