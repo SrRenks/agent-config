@@ -50,25 +50,25 @@
 
 ## Section 3: Reference docs - shared, read on demand
 Read on demand; never copy them into projects. Paths below are relative to `~/.config/agent-config/`.
-- `.ai/` structure: `docs/ai-directory.md`
-- Onboarding: `docs/onboarding.md`
-- Project docs standard: `docs/project-docs.md`
-- Development workflow: `docs/development-workflow.md`
-- Validation checklist: `docs/validation-checklist.md`
-- Evals (retained task set for config changes): `docs/evals.md`
-- Git/Commits: `docs/git-workflow.md`
-- Architecture: `docs/architecture.md`
-- Code Style: `docs/coding-standards.md`
-- Testing: `docs/testing.md`
-- Security: `docs/security.md`
-- Complexity: `docs/complexity.md`
-- Coupling: `docs/coupling.md`
-- Debugging: `docs/debugging.md`
-- Maintainability: `docs/maintainability.md`
-- Performance: `docs/performance.md`
-- Languages: `docs/languages/`
-- Decisions: `docs/decisions/`
-- Dependencies: `docs/dependency-policy.md`
+- `.ai/` structure: `core/docs/ai-directory.md`
+- Onboarding: `core/docs/onboarding.md`
+- Project docs standard: `core/docs/project-docs.md`
+- Development workflow: `core/docs/development-workflow.md`
+- Validation checklist: `core/docs/validation-checklist.md`
+- Evals (retained task set for config changes): `core/docs/evals.md`
+- Git/Commits: `core/docs/git-workflow.md`
+- Architecture: `core/docs/architecture.md`
+- Code Style: `core/docs/coding-standards.md`
+- Testing: `core/docs/testing.md`
+- Security: `core/docs/security.md`
+- Complexity: `core/docs/complexity.md`
+- Coupling: `core/docs/coupling.md`
+- Debugging: `core/docs/debugging.md`
+- Maintainability: `core/docs/maintainability.md`
+- Performance: `core/docs/performance.md`
+- Languages: `core/docs/languages/`
+- Decisions: `core/docs/decisions/`
+- Dependencies: `core/docs/dependency-policy.md`
 - Tool integrations: per-tool configs under `agents/` (claude-code, gemini, dsh); shared skills at `skills/` (symlinked to both `~/.claude/skills` and `~/.dsh/skills`); dsh preset roster at `~/.dsh/.agent-presets/`
 
 ## Section 4: Memory files (`.ai/`, local-only, never committed)
