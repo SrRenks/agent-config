@@ -7,7 +7,7 @@ One deterministic, read-first-then-ask procedure to understand an existing codeb
 
 ## Workflow
 1. Classify before acting - confirm EXISTING (source, build files, or commit history). NEW/empty repos go through ai-init, not this flow.
-2. Read state - `.ai/project.md`, `.ai/session.md`, `.ai/assumptions.md`, `.ai/context/index.md` if present; root `README.md`; `docs/repository-map.md`.
+2. Read state - git state first: current branch, `git status` (uncommitted changes), `git log --oneline -10`; then `.ai/project.md`, `.ai/session.md`, `.ai/assumptions.md`, `.ai/context/index.md` if present; root `README.md`; `docs/repository-map.md`.
 3. Survey, read-only - top-level structure, entry points, manifest files, CI config, test locations. No code edits in this phase.
 4. Map the system - module layout, data flow, external boundaries, change points and seams. Draft `docs/repository-map.md` if absent (human-formatted, committed).
 5. Ask, never presume - run the question checklist below. Batch by topic; wait for answers before the next batch.
@@ -35,6 +35,8 @@ One deterministic, read-first-then-ask procedure to understand an existing codeb
 ## Rules
 - Never presume business rules, workflow, or architecture; when the code does not make them explicit, ask.
 - Never edit code during onboarding; it is read-only until understanding is confirmed.
+- Never make changes on `main` or another protected branch; if the session starts there, stop and ask which branch to work on. Never create or switch branches without the human's approval.
+- Never touch uncommitted changes that are not yours; if the tree is dirty, ask how to proceed.
 - Never fabricate; record unknowns as open questions, not guesses.
 - Do not dump all questions at once; batch by topic and wait for answers.
 - Create only the context files that apply; no `database.md` without a database.
