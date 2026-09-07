@@ -1,4 +1,4 @@
-# Personal preferences - not committed, not shared.
+# Personal preferences - committed; edit to match yours.
 # Loaded after CLAUDE.md. Override project conventions here.
 
 # Editor
