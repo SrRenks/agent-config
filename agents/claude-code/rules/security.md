@@ -1,6 +1,8 @@
 ---
 description: Security rules - applies to all files.
 globs: "**/*"
+paths:
+  - "**/*"
 ---
 
 - Never commit secrets, tokens, API keys, or passwords.
