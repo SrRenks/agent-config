@@ -2,7 +2,7 @@
 
 ## Karpathy Principles (llm-rigor)
 
-1. Think before coding - State implementation plan before any code
+1. Think before coding - State implementation plan before any code. For multi-file or uncertain work: numbered plan with success criteria, approved first. Skip the written plan when the change fits a one-sentence diff.
 2. Surgical changes - Touch only requested lines. No drive-by refactoring.
 3. Minimum viable code - Solve the current problem completely - includes error handling, logging, edge cases. Minimum scope, not minimum quality.
 4. Pushback scales with certainty - Probe harder when user sounds confident. Question when evidence is weak.
@@ -21,14 +21,12 @@
 2. Plan - numbered implementation plan with success criteria
 3. Implement - complete changes: error handling, logging, edge cases
 4. Verify - tests, linters, diagnostics
-5. Review - self-review the diff. Working code is a first draft: after tests go green, do one ruthless edit. Remove dead code, debug artifacts, speculative abstractions. Explain what changed.
+5. Review - self-review the diff. Working code is a first draft: after tests go green, do one ruthless edit. Remove dead code, debug artifacts, speculative abstractions. Then fresh-context review: a subagent without session history checks the diff adversarially. Explain what changed.
 6. Commit - only after approval
 
 ## Complexity Budgets
-- Cyclomatic ≤10, Cognitive ≤15, Lines/function ≤60, File ≤500, Nesting ≤3, Params ≤4
-- Complex code is agent drag - expensive for both humans and agents. Do not increase total repository complexity without justification.
-- Studies show AI-assisted repositories see cognitive complexity rise by ~41% across iterations. Counteract by enforcing budgets in CI.
-- Document exceptions in commit message.
+- Single source of the budgets and rationale: `~/.config/agent-config/docs/complexity.md`. Enforce in CI; do not increase total repository complexity without justification. Document exceptions in the commit message.
+- Evidence: GitClear's "AI Copilot Code Quality" studies (2024-2025) measure rising churn, copy/pasted lines, and duplicated code blocks in AI-assisted repositories, with refactoring ("moved" lines) declining - see https://gitclear-public.s3.us-west-2.amazonaws.com/AI-Copilot-Code-Quality-2025.pdf (retrieved 2026-09-06). Complex code is agent drag - expensive for both humans and agents to navigate.
 
 ## Dependencies
 - Standard library first.

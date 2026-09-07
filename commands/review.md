@@ -3,4 +3,5 @@ Review all pending changes on the current branch. Run:
 2. `git log @{u}..HEAD` - commits not yet pushed
 3. Run linters on all changed files
 4. Run tests for all changed packages/modules
-5. Report: summary of changes, any lint warnings, test results, files touched
+5. Fresh-context review - delegate the diff to a subagent with no session history; it hunts for bugs, overreach, missing tests, unintended changes; fix valid findings
+6. Report: summary of changes, any lint warnings, test results, fresh-review findings, files touched
