@@ -14,6 +14,7 @@
 5. Stop when confused. Ask. Don't barrel ahead with wrong assumptions.
 6. Touch only what's requested. No drive-by refactoring. No cleanups outside scope.
 7. Formatting by audience: agent-facing files (this config, `.ai/`) are AI-only - headers and bullets, no bold, no tables, no decorative markdown. Committed project docs (`README.md`, `docs/`) are written for humans - full markdown.
+8. AI-writing hygiene applies only to prose written into files for humans (README, docs, code comments, commit messages): follow `~/.config/agent-config/core/docs/ai-writing.md`. Chat replies and `.ai/` files are exempt.
 
 ## Section 1: Project entry
 1. On first action in a workspace, classify the project:
@@ -46,7 +47,8 @@
 2. Fresh-context review: delegate the diff to a subagent (or second session) that does not share this conversation; fix its findings before declaring done.
 3. Run the validation checklist - `~/.config/agent-config/core/docs/validation-checklist.md` (a project `docs/validation-checklist.md` overrides it).
 4. Working code is a first draft. After tests go green, do one ruthless edit of your own diff - remove dead code, abstractions, debug artifacts.
-5. Never `git add -A`. Stage explicit files only.
+5. Scan any human-facing prose written in this change (README, docs, code comments, commit messages) against `~/.config/agent-config/core/docs/ai-writing.md`; fix the tells.
+6. Never `git add -A`. Stage explicit files only.
 
 ## Section 3: Reference docs - shared, read on demand
 Read on demand; never copy them into projects. Paths below are relative to `~/.config/agent-config/`.
@@ -59,6 +61,7 @@ Read on demand; never copy them into projects. Paths below are relative to `~/.c
 - Git/Commits: `core/docs/git-workflow.md`
 - Architecture: `core/docs/architecture.md`
 - Code Style: `core/docs/coding-standards.md`
+- AI-writing tells (README/docs/comments/commit messages): `core/docs/ai-writing.md`
 - Testing: `core/docs/testing.md`
 - Security: `core/docs/security.md`
 - Complexity: `core/docs/complexity.md`
