@@ -50,6 +50,16 @@ symlink "$SRC/agents/claude-code/rules" "$HOME/.cursor/rules"
 # ── Generic fallback (some tools read ~/.agents/AGENTS.md) ───────────────────
 symlink "$SRC/AGENTS.md" "$HOME/.agents/AGENTS.md"
 
+# ── Git identity (directory-scoped; see core/docs/git-workflow.md) ─────────────
+GC="$HOME/.gitconfig"
+if grep -q 'agent-config/gitconfig' "$GC" 2>/dev/null; then
+    echo "  skip: ~/.gitconfig already includes the repo gitconfig"
+else
+    mkdir -p "$(dirname "$GC")"
+    printf '\n[includeIf "gitdir:~/Projects/**"]\n\tpath = %s/gitconfig\n[includeIf "gitdir:~/.config/**"]\n\tpath = %s/gitconfig\n' "$SRC" "$SRC" >> "$GC"
+    echo "  wired: ~/.gitconfig includes $SRC/gitconfig for ~/Projects/** and ~/.config/**"
+fi
+
 # ── ai-init / ai-context commands ────────────────────────────────────────────
 mkdir -p "$HOME/.local/bin"
 ln -sfn "$SRC/ai-init" "$HOME/.local/bin/ai-init"
@@ -65,6 +75,7 @@ echo "  Gemini CLI  : ~/.gemini/GEMINI.md"
 echo "  Cursor      : ~/.cursor/rules"
 echo "  Generic     : ~/.agents/AGENTS.md"
 echo "  Commands    : ~/.local/bin/ai-init, ai-context"
+echo "  Git identity : ~/.gitconfig (conditional include of gitconfig)"
 echo ""
 echo "dsh (DeepSeek Harness) is installed separately:"
 echo "  bash \"$SRC/agents/dsh/install.sh\""
