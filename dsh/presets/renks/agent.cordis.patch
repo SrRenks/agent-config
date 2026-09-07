@@ -1,0 +1,75 @@
+--- a/agent.cordis.yml	2026-09-07 01:59:14.517589795 -0300
++++ b/agent.cordis.yml	2026-09-07 01:59:14.518500591 -0300
+@@ -27,10 +27,23 @@
+     text: >-
+       You are a coding agent powered by the {{model}} model. Your working directory is {{cwd}}.
+ 
+-- id: agent-instructions
+-  name: '@deepseek-ai/dsh-agent-instructions'
++# Instruction delivery — evidence-based (2026-09 config review): the full
++# AGENTS.md/CLAUDE.md digest is NOT injected. Large always-on injections
++# perturb trajectories (liangshen issue #6: skill-catalog injection broke
++# first-request anchoring 0/9 vs ~81% without) and dilute attention (context
++# rot; Anthropic "smallest set of high-signal tokens"; ETH Zurich
++# arXiv:2602.11988, +20-23% inference cost). Instead ONE hint is injected once
++# after the session's first durable tool call — "instruction files exist; read
++# them" — and the model reads the files itself when relevant. Files probed:
++# project-root AGENTS.md / CLAUDE.md / AGENTS.local.md / CLAUDE.local.md and
++# $DSH_HOME/AGENTS.md. NOTE: .ai/project.md and .ai/session.md are NOT
++# discovered by this plugin — the shared AGENTS.md orders the agent to read
++# them at session start.
++- id: instruction-hint
++  name: ./instruction-hint.mjs
+   config:
+-    maxBytes: 65536
++    promoteOn: tool-call
++    includeSubagents: true
+ 
+ # ── shell ───────────────────────────────────────────────────────────────────
+ 
+@@ -77,14 +90,19 @@
+ 
+ # The skill REGISTRY lives in the host composition and is layered per scope:
+ # these rows register into THIS preset's layer of it, so they need no realm.
+-# `skill-filesystem` contributes local-root discovery for agents on this preset, and
+-# `tool-skill` gives them the catalog and loader; the merged catalog also
+-# carries whatever the deployment registered globally (repository plugins).
++# `skill-filesystem` contributes local-root discovery for agents on this preset.
++# The full skill-catalog injection (`dsh-tool-skill`'s ~9KB `<available_skills>`
++# reminder) is REMOVED (evidence-based, see the identity section). Instead
++# `skill-search` exposes two small on-demand tools — `skill_search` (list
++# matching name/description summaries) and `skill_load` (inject one skill's
++# full instructions) — the tool-search pattern. Scale policy: search/load
++# remains the right default as the catalog grows; do not re-add catalog
++# injection beyond ~3-5 skills.
+ - id: skill-filesystem
+   name: '@deepseek-ai/dsh-skill-filesystem'
+ 
+-- id: tool-skill
+-  name: '@deepseek-ai/dsh-tool-skill'
++- id: skill-search
++  name: ./skill-search.mjs
+ 
+ # ── goals ───────────────────────────────────────────────────────────────────
+ 
+@@ -99,6 +117,10 @@
+ 
+ # ── plan mode ───────────────────────────────────────────────────────────────
+ 
++# NOTE: this `section` is duplicated byte-identical in the liangshen preset —
++# keep BOTH copies in sync on any edit (shared-include support is not
++# available in preset compositions).
++#
+ # Plan state is per-agent by nature, so an entry-local realm is not a
+ # workaround here — it is the correct lifetime.
+ - id: planning
+@@ -244,6 +266,9 @@
+ 
+ # The `web` service and its search provider stay in the host composition; only
+ # the model-facing tool is per-session.
++# fetch stays ENABLED in this default preset; liangshen (experimental minimal
++# preset) deliberately disables it. If the policies must match, change BOTH
++# copies of both presets.
+ - id: tool-web
+   name: '@deepseek-ai/dsh-tool-web'
+   config:
