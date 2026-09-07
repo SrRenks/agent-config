@@ -624,7 +624,7 @@ Explanation - understanding-oriented, context:
 - Audience: "Why does it work?".
 - Convention: `architecture.md`, `architecture/*.md`.
 - Structure: overview → design rationale → data flow → cross-cutting decisions.
-- Explain the "why", not just the "what".
+- Explain the why, then the what.
 
 ## File conventions
 

@@ -1,5 +1,5 @@
 ---
-description: Python language rules — style, typing, testing.
+description: Python language rules - style, typing, testing.
 globs: "**/*.py"
 paths:
   - "**/*.py"

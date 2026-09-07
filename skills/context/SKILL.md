@@ -1,6 +1,6 @@
 ---
 name: context
-description: File project knowledge the user shares conversationally into the correct .ai/ files — purpose, rules, database, dependencies, conventions, decisions. Also close the memory loop at the end of tasks and sessions.
+description: File project knowledge the user shares conversationally into the correct .ai/ files - purpose, rules, database, dependencies, conventions, decisions. Also close the memory loop at the end of tasks and sessions.
 whenToUse: When the user shares project context, decisions, or conventions that should be persisted, or when finishing a task/session in an initialized project.
 ---
 Act as the project's knowledge manager. File what the user tells you into the correct local markdown files:
