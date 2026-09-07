@@ -1,4 +1,6 @@
 ---
+description: Testing rules for test files.
+globs: "**/*_test.go"
 paths:
   - "**/*_test.go"
   - "**/test_*.py"
@@ -8,7 +10,6 @@ paths:
   - "**/*.spec.js"
   - "**/tests/**"
 ---
-
 # Testing Rules
 
 - One assertion per test when practical. Multiple related assertions OK if they test one behavior.

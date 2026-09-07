@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# dsh/install.sh — install the personal dsh layer on this machine.
+# agents/dsh/install.sh — install the personal dsh layer on this machine.
 #
 # One command after `git clone`:
-#     bash ~/.config/agent-config/dsh/install.sh
+#     bash ~/.config/agent-config/agents/dsh/install.sh
 #
 # Idempotent: safe to re-run after every `git pull` or dsh update. It rebuilds
 # the `renks` preset from the dsh version ACTUALLY INSTALLED here (stock
@@ -11,8 +11,8 @@
 # It never leaves a broken preset installed.
 set -euo pipefail
 
-SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"   # .../agent-config/dsh
-REPO="$(cd "${SRC}/.." && pwd)"                      # repo root (clone location)
+SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"   # .../agent-config/agents/dsh
+REPO="$(cd "${SRC}/../.." && pwd)"                    # repo root (clone location)
 DSH_H="${DSH_HOME:-${HOME}/.dsh}"
 PRESET_DIR="${SRC}/presets/renks"
 STOCK="${DSH_H}/profiles/node_modules/@deepseek-ai/dsh-agent-presets/presets/standard/agent.cordis.yml"
@@ -81,8 +81,8 @@ echo "  [ok] preset 'renks' installed at ${DSH_H}/.agent-presets/renks"
 
 # ── 3) User-global rules + skills (symlinks: `git pull` updates propagate) ───
 ln -sfn "${REPO}/AGENTS.md" "${DSH_H}/AGENTS.md"
-ln -sfn "${SRC}/skills" "${DSH_H}/skills"
-echo "  [ok] symlinks: ${DSH_H}/AGENTS.md -> repo AGENTS.md ; ${DSH_H}/skills -> repo dsh/skills"
+ln -sfn "${REPO}/skills" "${DSH_H}/skills"
+echo "  [ok] symlinks: ${DSH_H}/AGENTS.md -> repo AGENTS.md ; ${DSH_H}/skills -> repo skills"
 
 # ── 4) Make renks the default preset for new sessions ────────────────────────
 if grep -q '^agent-presets:' "${DSH_H}/settings.yaml" 2>/dev/null; then

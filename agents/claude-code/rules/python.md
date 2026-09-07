@@ -1,8 +1,9 @@
 ---
+description: Python language rules — style, typing, testing.
+globs: "**/*.py"
 paths:
   - "**/*.py"
 ---
-
 # Python-Specific Rules
 
 - Use type hints on all function signatures.

@@ -1,0 +1,1 @@
+../../../skills/ship/SKILL.md

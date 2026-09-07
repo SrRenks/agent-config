@@ -1,8 +1,9 @@
 ---
+description: Rust language rules — safety, idioms, tooling.
+globs: "**/*.rs"
 paths:
   - "**/*.rs"
 ---
-
 # Rust-Specific Rules
 
 - Use `Result<T, E>` and `Option<T>`. Never `unwrap()` or `expect()` in production code unless the invariant is logically impossible.

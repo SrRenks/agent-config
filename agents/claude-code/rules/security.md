@@ -1,5 +1,7 @@
-# Security rules - applies to all files
-# No path filter = loads everywhere
+---
+description: Security rules — applies to all files.
+globs: "**/*"
+---
 
 - Never commit secrets, tokens, API keys, or passwords.
 - If you encounter a .env file, do not read it. Reference it by name only.
