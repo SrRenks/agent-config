@@ -94,56 +94,38 @@ func process(data *Data) error {
 
 ## Comments
 
-Docstrings (or the language equivalent - Go doc comments, Rust `///` doc
-comments) document every public module, function, method, and class.
+Stance: the code must explain itself. A comment is a debt, not documentation.
+Every comment must justify its existence with information the code cannot
+carry. Inline comments are exceptional; docstrings are the normal path.
 
-Comments are allowed only where a docstring cannot reach:
-- non-public methods - a comment describing what the method does
-- tricky or non-obvious implementation details - the why, a constraint, a
-  tradeoff, or a compensation that is not caller-facing
+Docstrings (Go doc comments, Rust `///`, Python docstrings, Javadoc) document
+every public module, class, function, and method. Content: contract, inputs
+and outputs, errors and panics, side effects. Never restate the signature.
 
-Never write comments that merely describe the code. Caller-facing API
-documentation belongs in the docstring, not in comments.
+Inline comments are allowed only for exceptional information:
+- the why of a decision that looks wrong without context (a workaround, a
+  rejected alternative, an external constraint)
+- invariants the code maintains but cannot express
+- warnings: dangerous conditions, performance traps, thread-safety notes
+- magic numbers whose justification is not in the name
 
-Comment noise (delete on sight in any diff, own or reviewed):
-- decorative banners and separator comments (lines of dashes, equals, boxes)
-- comments that restate the next line ("increment i", "now we loop")
-- per-line narration of what the code does
-- commented-out code blocks (git history keeps them; delete instead)
-- procedural self-narration ("updating the value", "checking the result")
-- comment clusters that explain obvious library calls or language keywords
+Never write:
+- what comments: anything that restates the code ("increment i", "now we loop")
+- decorative banners, separator lines, section boxes
+- per-line narration or journaling ("updating the value")
+- commented-out code (delete it; git history keeps it)
+- comments on obvious library calls or language keywords
+- TODO comments without an actionable owner, or beyond the current task
 
-Keep a comment only when deleting it would cost a future reader information:
-non-obvious decisions, invariants, workarounds, magic-number justifications,
-constraints that the code cannot express. The test: remove the comment; if
-nothing is lost, remove it permanently.
+Keep-test: delete the comment; if a future reader loses nothing, delete it
+permanently. If a comment was needed to explain confusing code, refactor the
+code instead of keeping the comment.
 
 Comment prose follows the AI-writing tells (core/docs/ai-writing.md): plain
 words, no promotional vocabulary, no em dashes.
 
-## Docstrings
-
-Python: Google-style docstrings (Google Python Style Guide).
-
-- Summary: one descriptive line, ends with a period.
-- Blank line, then sections as needed: `Args:`, `Returns:`, `Raises:`,
-  `Examples:` - each argument on its own indented `name: description` line.
-
-```python
-def connect(host: str, timeout: float = 5.0) -> Connection:
-    """Opens a connection to host.
-
-    Args:
-        host: Hostname or IP address to connect to.
-        timeout: Connection timeout in seconds.
-
-    Returns:
-        An open Connection object.
-
-    Raises:
-        TimeoutError: If the connection is not established within timeout.
-    """
-```
+Evidence and counterpoint: core/docs/sources.md (Martin, Atwood, Henney,
+Ousterhout, Google style guides).
 
 - Go: standard Go doc comments (`go.dev/doc/comment`) - begin with the
   identifier name, sentence-style.
