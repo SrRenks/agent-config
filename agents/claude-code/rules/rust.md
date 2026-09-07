@@ -1,5 +1,5 @@
 ---
-description: Rust language rules — safety, idioms, tooling.
+description: Rust language rules - safety, idioms, tooling.
 globs: "**/*.rs"
 paths:
   - "**/*.rs"

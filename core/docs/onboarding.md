@@ -21,10 +21,10 @@ One deterministic, read-first-then-ask procedure to understand an existing codeb
 - Domain - what the system does, business rules, glossary terms.
 - Database and storage - engines, schema source, migrations, backup and restore.
 - External services - APIs, message queues, auth providers, cron jobs.
-- Build, test, lint - exact commands; confirm against CI config, not just manifests.
+- Build, test, lint - exact commands; confirm against CI config, not manifests alone.
 - Conventions - code style, commit style, doc locations, any local rules not yet in `.ai/`.
 - Deployment and releases - how code ships, versioning, rollback.
-- Ambiguities - every code path whose intent is not explicit; ask rather than infer.
+- Ambiguities - every code path whose intent is not explicit; ask instead of inferring.
 
 ## Output - files to write as facts are confirmed
 - `.ai/project.md` - stack, build/test/lint, conventions.

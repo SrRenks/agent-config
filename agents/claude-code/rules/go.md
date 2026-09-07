@@ -1,5 +1,5 @@
 ---
-description: Go language rules — idioms, error handling, tooling.
+description: Go language rules - idioms, error handling, tooling.
 globs: "**/*.go"
 paths:
   - "**/*.go"

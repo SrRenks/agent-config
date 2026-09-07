@@ -1,5 +1,5 @@
 ---
-description: Security rules — applies to all files.
+description: Security rules - applies to all files.
 globs: "**/*"
 ---
 
