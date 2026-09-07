@@ -105,6 +105,22 @@ Comments are allowed only where a docstring cannot reach:
 Never write comments that merely describe the code. Caller-facing API
 documentation belongs in the docstring, not in comments.
 
+Comment noise (delete on sight in any diff, own or reviewed):
+- decorative banners and separator comments (lines of dashes, equals, boxes)
+- comments that restate the next line ("increment i", "now we loop")
+- per-line narration of what the code does
+- commented-out code blocks (git history keeps them; delete instead)
+- procedural self-narration ("updating the value", "checking the result")
+- comment clusters that explain obvious library calls or language keywords
+
+Keep a comment only when deleting it would cost a future reader information:
+non-obvious decisions, invariants, workarounds, magic-number justifications,
+constraints that the code cannot express. The test: remove the comment; if
+nothing is lost, remove it permanently.
+
+Comment prose follows the AI-writing tells (core/docs/ai-writing.md): plain
+words, no promotional vocabulary, no em dashes.
+
 ## Docstrings
 
 Python: Google-style docstrings (Google Python Style Guide).

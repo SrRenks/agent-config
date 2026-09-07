@@ -46,7 +46,7 @@
 1. Self-review the diff for unintended changes.
 2. Fresh-context review: delegate the diff to a subagent (or second session) that does not share this conversation; fix its findings before declaring done.
 3. Run the validation checklist - `~/.config/agent-config/core/docs/validation-checklist.md` (a project `docs/validation-checklist.md` overrides it).
-4. Working code is a first draft. After tests go green, do one ruthless edit of your own diff - remove dead code, abstractions, debug artifacts.
+4. Working code is a first draft. After tests go green, do one ruthless edit of your own diff - remove dead code, abstractions, debug artifacts, and noise comments.
 5. Scan any human-facing prose written in this change (README, docs, code comments, commit messages) against `~/.config/agent-config/core/docs/ai-writing.md`; fix the tells.
 6. Never `git add -A`. Stage explicit files only.
 
