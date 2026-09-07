@@ -46,4 +46,4 @@ One deterministic, read-first-then-ask procedure to understand an existing codeb
 - Repo map: `repository-map.md`
 - Git and PR: `git-workflow.md`
 - Project docs: `project-docs.md`
-- Behavior rules: `../skills/RULES.md`
+- Behavior rules: `../principles.md`

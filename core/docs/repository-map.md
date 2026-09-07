@@ -31,7 +31,7 @@ Shared across all projects; read on demand (AGENTS.md §3). Never copied into a 
 - `languages/` - go, kotlin, python, rust
 
 ## Agent support
-- `skills/RULES.md` - universal agent principles (Karpathy/llm-rigor + operational rules); complexity budgets single-sourced in `docs/complexity.md`
+- `core/principles.md` - universal agent principles (Karpathy/llm-rigor + operational rules); complexity budgets single-sourced in `docs/complexity.md`
 - `rules/` - scoped rules (Claude Code, by path filter): go, python, rust, security, testing
 - `commands/` - slash commands: `ci`, `review` (incl. fresh-context review), `ship` (incl. fresh-context review)
 - `hooks/` - lifecycle hooks: `session-init` (opt-in), `lint-check`, `block-danger`
