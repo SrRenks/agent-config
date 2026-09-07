@@ -1,8 +1,9 @@
 ---
+description: Go language rules — idioms, error handling, tooling.
+globs: "**/*.go"
 paths:
   - "**/*.go"
 ---
-
 # Go-specific rules
 
 - Use `context.Context` as first parameter in all functions that do I/O.
