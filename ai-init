@@ -26,10 +26,18 @@ else
     echo "  linked: .ai/agents.md -> $CONFIG/AGENTS.md"
 fi
 
+# ── Repo-root AGENTS.md: the path every AGENTS.md-reading tool looks for ──
+if [ -e "$PROJECT/AGENTS.md" ] && [ ! -L "$PROJECT/AGENTS.md" ]; then
+    echo "  skip: ./AGENTS.md is a real file - leave it; your rules stay in .ai/"
+elif [ ! -e "$PROJECT/AGENTS.md" ]; then
+    ln -sfn "$CONFIG/AGENTS.md" "$PROJECT/AGENTS.md"
+    echo "  linked: ./AGENTS.md -> shared config (Codex, Cursor, Windsurf, Amp, Jules, Claude Code)"
+fi
+
 # ── Project context files (real files, project-owned) ──
 for f in project.md session.md assumptions.md scratchpad.md; do
     if [ ! -f "$PROJECT/.ai/$f" ]; then
-        cp "$CONFIG/templates/$f" "$PROJECT/.ai/$f"
+        cp "$CONFIG/core/templates/$f" "$PROJECT/.ai/$f"
         echo "  created: .ai/$f"
     fi
 done
@@ -98,4 +106,4 @@ echo "  .ai/scratchpad.md  - working notes"
 echo "  .ai/context/       - project knowledge base (index.md created; topic docs on demand)"
 echo "  README.md          - NOT auto-created. Generate on demand with real project"
 echo "                       context: run 'ai-context' (or ask the agent after onboarding)"
-echo "Structure: $CONFIG/docs/ai-directory.md"
+echo "Structure: $CONFIG/core/docs/ai-directory.md"

@@ -1,147 +1,85 @@
 # agent-config
 
-Shared AI agent behavior configuration - a single source of truth for how
-coding agents (Claude Code, Cursor, CodeCompanion, Gemini CLI, Codex, and
-others) should behave across all your projects.
+Single source of truth for how coding agents behave across all tools and all
+projects: Claude Code, Codex, Gemini CLI, Cursor, dsh (DeepSeek Harness), and
+any other AGENTS.md-reading tool.
 
-## What it does
+## Layout
 
-- **One config, all tools.** The shared rules in `AGENTS.md` apply everywhere.
-  Tool-specific wrappers (`CLAUDE.md`, `GEMINI.md`) add tool-specific notes
-  and then include the shared config.
-- **Per-project overrides.** Each project gets a `.ai/` directory with a
-  symlink to the shared config plus project-specific files (`project.md`
-  for stack/build/test/conventions, `context/` for domain knowledge).
-- **Predictable agent behavior.** Non-negotiable rules: no flattery, explain
-  changes, disagree with evidence, never fabricate, surgical edits only,
-  test-first, complexity budgets, no new dependencies without approval.
-- **Lean by evidence.** Instructions are injected on demand, not dumped into
-  every request: the dsh default preset hints "instruction files exist, read
-  them" and exposes skills via `skill_search`/`skill_load` instead of a full
-  catalog (per the 2026-09 config review: context rot, Anthropic's
-  smallest-set-of-high-signal-tokens, ETH Zurich arXiv:2602.11988).
+```
+AGENTS.md                universal rules - no tool-specific content
+core/                    tool-free content
+  docs/                  reference docs (read on demand)
+  templates/             .ai/ file templates
+  principles.md          universal agent principles
+skills/                  one source of truth per procedure
+  plan/ onboard/ context/ review/ ci/ ship/   (SKILL.md dirs)
+agents/                  per-tool adapters
+  claude-code/           CLAUDE.md, settings.json, hooks/, rules/, commands/
+  gemini/                GEMINI.md
+  dsh/                   install.sh + presets/renks/
+ai-init, ai-context      per-project tooling
+setup.sh                 installs every tool bridge
+```
+
+## How universality works
+
+- **One procedure, one file.** `skills/*/SKILL.md` carries a combined frontmatter
+  (`name`/`description`/`whenToUse`) that both dsh and Claude Code read - they
+  share the dir+SKILL.md format. Claude slash commands
+  (`agents/claude-code/commands/`) are symlinks into `skills/`.
+- **Shared skills, two mounts.** `~/.claude/skills` and `~/.dsh/skills` both
+  point at the same `skills/` directory.
+- **Dual-format rules.** `agents/claude-code/rules/` carry combined frontmatter
+  (`description` + `globs` + `paths`) so the same files serve Claude Code and
+  Cursor.
+- **Project-root AGENTS.md.** `ai-init` links `./AGENTS.md` in each project -
+  the path every AGENTS.md-reading tool (Codex, Cursor, Windsurf, Amp, Jules,
+  Claude Code) looks for.
 
 ## Supported tools
 
-| Tool | File | Install path |
-|------|------|-------------|
-| Claude Code | `CLAUDE.md`, `CLAUDE.local.md`, `settings.json`, `skills/`, `hooks/`, `rules/`, `commands/`, `claudeignore` | `~/.claude/` |
-| Cursor / Codex | `AGENTS.md` | `~/.codex/AGENTS.md` |
-| CodeCompanion (Neovim) | `AGENTS.md` | via `.ai/agents.md` symlink in each project |
-| Gemini CLI | `GEMINI.md` | `~/.gemini/GEMINI.md` |
-| Generic fallback | `AGENTS.md` | `~/.agents/AGENTS.md` |
+| Tool | Bridge | Install path |
+|---|---|---|
+| Claude Code | `agents/claude-code/` (CLAUDE.md, skills, hooks, rules, commands, settings.json, claudeignore) | `~/.claude/` |
+| Codex | `AGENTS.md` | `~/.codex/AGENTS.md` |
+| Gemini CLI | `agents/gemini/GEMINI.md` | `~/.gemini/GEMINI.md` |
+| Cursor | shared rules (combined frontmatter) | `~/.cursor/rules` |
+| dsh | `agents/dsh/` (preset + installer) | `~/.dsh/` |
+| Generic AGENTS.md tools | `AGENTS.md` | `~/.agents/AGENTS.md` |
 
 ## Install
 
 ```bash
-git clone https://github.com/your-username/agent-config.git ~/.config/agent-config
+git clone git@github.com:SrRenks/agent-config.git ~/.config/agent-config
 cd ~/.config/agent-config
-./setup.sh
+./setup.sh                    # all tool bridges
+bash agents/dsh/install.sh    # dsh preset + shared skills
 ```
 
-`setup.sh` creates symlinks from `~/.config/agent-config/` to each tool's
-expected path. Existing real files are backed up to `backups/` before being
-replaced.
+`setup.sh` derives paths from its own location (clone-anywhere) and backs up
+existing real files to `backups/` before replacing them with symlinks.
 
 ## Per-project setup
 
-In any project directory:
-
 ```bash
-ai-init      # creates .ai/ with symlink + skeleton files
-ai-context   # detects stack, db, deps, conventions; generates context + README
-```
-
-- `ai-init` - sets up `.ai/agents.md` (symlink to shared config), skeleton
-  memory files (`project.md`, `session.md`, `assumptions.md`, `scratchpad.md`),
-  and a `.gitignore` entry. Detects project maturity (NEW vs EXISTING).
-- `ai-context` - detects language, framework, database, external services, and
-  local conventions; generates `.ai/context/` topic files and `README.md`.
-  Only generates files that apply (no database.md without a database).
-
-## Repository structure
-
-```
-~/.config/agent-config/
-├── AGENTS.md              # shared agent rules (source of truth)
-├── CLAUDE.md              # Claude Code wrapper (includes AGENTS.md)
-├── CLAUDE.local.md        # personal overrides (not committed in practice)
-├── GEMINI.md              # Gemini CLI wrapper (includes AGENTS.md)
-├── settings.json          # Claude Code permissions + hooks config
-├── claudeignore           # files Claude Code should never access
-├── setup.sh               # one-time install: creates symlinks
-├── ai-init                # per-project .ai/ initialization script
-├── ai-context             # on-demand context + README generator
-├── commands/              # Claude Code slash commands
-│   ├── ci.md              # /ci - run full CI pipeline locally
-│   ├── review.md          # /review - review pending changes
-│   └── ship.md            # /ship - prepare and commit
-├── hooks/                 # Claude Code hooks (PreToolUse, PostToolUse)
-│   ├── block-danger       # blocks rm -rf, sudo, git push --force, etc.
-│   ├── lint-check         # auto-lints files after edits
-│   └── session-init       # OPT-IN (not wired in settings.json) - mirrors ai-init
-├── rules/                 # scoped rules by language/concern
-│   ├── go.md
-│   ├── python.md
-│   ├── rust.md
-│   ├── security.md
-│   └── testing.md
-├── skills/                # agent skills (loaded as context)
-│   └── RULES.md           # universal agent principles (Karpathy, complexity budgets)
-├── dsh/                   # dsh harness integration
-│   ├── presets/renks/     # default preset: hint + skill_search/skill_load (no full injection)
-│   └── skills/            # plan, onboard, context, review, ci, ship (symlinked to ~/.dsh/skills)
-├── docs/                  # reference docs (read on demand by agents)
-│   ├── ai-directory.md    # .ai/ directory standard
-│   ├── architecture.md
-│   ├── coding-standards.md
-│   ├── complexity.md
-│   ├── coupling.md
-│   ├── debugging.md
-│   ├── decisions/         # ADR template
-│   ├── dependency-policy.md
-│   ├── development-workflow.md
-│   ├── evals.md           # retained eval set for config changes
-│   ├── git-workflow.md
-│   ├── languages/         # go, kotlin, python, rust
-│   ├── maintainability.md
-│   ├── performance.md
-│   ├── project-docs.md
-│   ├── repository-map.md
-│   ├── security.md
-│   ├── testing.md
-│   └── validation-checklist.md
-└── templates/             # templates for new projects
-    ├── project.md
-    ├── session.md
-    ├── assumptions.md
-    ├── scratchpad.md
-    ├── README.md
-    ├── convention-doc.md
-    ├── CHANGELOG.md
-    └── project-docs/      # architecture, getting-started, index, repository-map, roadmap, validation-checklist
+ai-init      # .ai/ skeleton + repo-root AGENTS.md symlink
+ai-context   # context topic files + README on demand
 ```
 
 ## Design principles
 
-- **Shared config is read-only.** Agents never edit `~/.config/agent-config/`.
-  Project-specific rules go in `.ai/project.md` and `.ai/docs/`.
-- **No templates copied into projects.** `ai-context` generates context files
-  and README.md dynamically based on what it detects - no generic filler.
-- **`.ai/` is never committed.** Per-project agent knowledge stays local.
-- **Symlinks propagate updates.** When the shared config is updated (git pull),
-  all projects pick up the changes immediately through the `.ai/agents.md`
-  symlink.
+- Shared config is READ-ONLY for agents; project rules live in `.ai/project.md`.
+- `.ai/` is never committed (gitignored by `ai-init`).
+- Symlinks propagate `git pull` updates to every tool and project instantly.
+- Lean by evidence: instructions are pulled on demand, not dumped into every
+  request (see `core/docs/evals.md`).
 
 ## Updating
 
 ```bash
-cd ~/.config/agent-config
-git pull
+cd ~/.config/agent-config && git pull
 ```
-
-All projects get the updated shared rules immediately via the symlink. No
-per-project action needed.
 
 ## License
 

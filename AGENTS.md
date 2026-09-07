@@ -2,9 +2,9 @@
 
 ## Scope and ownership
 - This configuration is the single source of truth for agent behavior. It is READ-ONLY for agents: never create, edit, or delete anything under `~/.config/agent-config/` unless the human explicitly orders it.
-- A project's agent configuration lives in its `.ai/` directory. `.ai/agents.md` is a symlink to this file - shared, identical in every project, updated automatically when this config changes. `.ai/project.md` holds project-specific rules. The `.ai/` structure is defined in `~/.config/agent-config/docs/ai-directory.md`.
+- A project's agent configuration lives in its `.ai/` directory. `.ai/agents.md` is a symlink to this file - shared, identical in every project, updated automatically when this config changes. `.ai/project.md` holds project-specific rules. The `.ai/` structure is defined in `~/.config/agent-config/core/docs/ai-directory.md`.
 - Custom, project-specific instructions belong only in `.ai/project.md` and `.ai/docs/`. Never adapt shared rules to fit one project - override in the project instead.
-- DSH note: the default dsh preset does not auto-inject this file - it injects a one-time hint. Read this file yourself at the start of work in any workspace.
+- Injection varies by tool: some tools auto-inject this file; others (including the dsh default preset) inject only a one-time hint. If unsure whether this file was injected, read it yourself at the start of work in any workspace.
 
 ## Section 0: Non-Negotiables
 1. No flattery. Never say "Great question," "Good catch," or similar. Be direct.
@@ -18,33 +18,33 @@
 ## Section 1: Project entry
 1. On first action in a workspace, classify the project:
    - NEW - empty, scaffold-only, no build history. Propose `ai-init`, fill `.ai/project.md` and project context, then plan the build-out.
-   - EXISTING - has source, build files, or commit history. Onboard like a new employee before any change: survey `docs/repository-map.md` and `.ai/context/index.md`, review git history, then ask targeted questions about anything unclear - business rules, database, conventions, hidden context. Follow the full procedure in `~/.config/agent-config/docs/onboarding.md`. Never re-create, restructure, or "improve" what already works.
-2. At session start in an initialized project, read `.ai/project.md` and `.ai/session.md` before acting. DSH does not inject `.ai/` files; this instruction is the only mechanism that loads them.
+   - EXISTING - has source, build files, or commit history. Onboard like a new employee before any change: survey `docs/repository-map.md` and `.ai/context/index.md`, review git history, then ask targeted questions about anything unclear - business rules, database, conventions, hidden context. Follow the full procedure in `~/.config/agent-config/core/docs/onboarding.md`. Never re-create, restructure, or "improve" what already works.
+2. At session start in an initialized project, read `.ai/project.md` and `.ai/session.md` before acting. Most tools do not inject `.ai/` files; this instruction is the only mechanism that loads them.
 3. Read state before acting: `.ai/assumptions.md` (decision log), `.ai/scratchpad.md` (working notes), `.ai/context/index.md` (project knowledge base).
 4. Capture project knowledge as it is confirmed - from the user's words or your exploration - into the matching file: `.ai/context/domain.md` (purpose, business rules, glossary), `.ai/context/architecture.md` (modules, data flow), `.ai/context/database.md` (schema, storage), `.ai/context/dependencies.md` (external services), `.ai/context/conventions.md` (local rules), `.ai/project.md` (stack, build/test, conventions), `.ai/assumptions.md` (decisions). Replace the open questions in the topic files with the confirmed facts. Never put facts in `.ai/context/index.md` - it is machine-owned.
 5. Consult `.ai/context/` and `.ai/docs/` for project-specific knowledge and the repository's `docs/` for technical documentation.
 6. Generate `README.md` and context topic files on demand with `ai-context` - driven by detected project context, only sections that apply. Never copy generic templates into the project.
-7. When creating agent-facing `.md` files (`.ai/`), follow `~/.config/agent-config/docs/ai-directory.md` and start from `~/.config/agent-config/templates/convention-doc.md`. Project docs (`README.md`, `docs/`) follow `~/.config/agent-config/docs/project-docs.md` and are formatted for humans.
+7. When creating agent-facing `.md` files (`.ai/`), follow `~/.config/agent-config/core/docs/ai-directory.md` and start from `~/.config/agent-config/core/templates/convention-doc.md`. Project docs (`README.md`, `docs/`) follow `~/.config/agent-config/core/docs/project-docs.md` and are formatted for humans.
 8. Commit only after human approval.
 
 ## Section 2: Workflow (CRISPY)
 ### Analysis
-1. Read the project's `docs/repository-map.md` for structure; if absent, use `~/.config/agent-config/docs/repository-map.md`.
-2. Load `~/.config/agent-config/skills/RULES.md` for behavior rules.
-3. Plan before code for multi-file or uncertain work: numbered implementation plan with explicit success criteria, approved before implementation. Skip the written plan when the change fits a one-sentence diff. Full procedure: `~/.config/agent-config/docs/development-workflow.md`.
+1. Read the project's `docs/repository-map.md` for structure; if absent, use `~/.config/agent-config/core/docs/repository-map.md`.
+2. Load `~/.config/agent-config/core/principles.md` for behavior rules.
+3. Plan before code for multi-file or uncertain work: numbered implementation plan with explicit success criteria, approved before implementation. Skip the written plan when the change fits a one-sentence diff. Full procedure: `~/.config/agent-config/core/docs/development-workflow.md`.
 4. Document assumptions in `.ai/assumptions.md`.
 ### Implementation
 1. Surgical changes only - every diff line traces to the request.
 2. Test-first: write failing test -> implement -> verify pass -> refactor.
 3. Complete code: every function handles errors, logs operations, covers edge cases. Minimum viable means minimum scope, not minimum quality.
-4. Complexity budgets: `~/.config/agent-config/docs/complexity.md` is the single source. Do not increase total repository complexity without justification.
+4. Complexity budgets: `~/.config/agent-config/core/docs/complexity.md` is the single source. Do not increase total repository complexity without justification.
 5. One task at a time. Finish, confirm, next.
 6. Time-box: 3 tries or 5 minutes for simple issues. For complex bugs, investigate deeper - don't patch blindly.
 7. Run linters after edits. Fix all warnings. Run tests. All must pass.
 ### Review
 1. Self-review the diff for unintended changes.
 2. Fresh-context review: delegate the diff to a subagent (or second session) that does not share this conversation; fix its findings before declaring done.
-3. Run the validation checklist - `~/.config/agent-config/docs/validation-checklist.md` (a project `docs/validation-checklist.md` overrides it).
+3. Run the validation checklist - `~/.config/agent-config/core/docs/validation-checklist.md` (a project `docs/validation-checklist.md` overrides it).
 4. Working code is a first draft. After tests go green, do one ruthless edit of your own diff - remove dead code, abstractions, debug artifacts.
 5. Never `git add -A`. Stage explicit files only.
 
@@ -69,7 +69,7 @@ Read on demand; never copy them into projects. Paths below are relative to `~/.c
 - Languages: `docs/languages/`
 - Decisions: `docs/decisions/`
 - Dependencies: `docs/dependency-policy.md`
-- DSH integration: presets under `dsh/presets/` (live roster: `~/.dsh/.agent-presets/`), skills under `dsh/skills/` (symlinked to `~/.dsh/skills`)
+- Tool integrations: per-tool configs under `agents/` (claude-code, gemini, dsh); shared skills at `skills/` (symlinked to both `~/.claude/skills` and `~/.dsh/skills`); dsh preset roster at `~/.dsh/.agent-presets/`
 
 ## Section 4: Memory files (`.ai/`, local-only, never committed)
 - `.ai/agents.md` - symlink to this file (shared; do not edit)
