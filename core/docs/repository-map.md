@@ -17,7 +17,7 @@ This config is READ-ONLY for agents. Projects do not copy it: `ai-init` creates 
 - `agents/dsh/presets/renks/` - the DEFAULT dsh preset (mirrors the live roster `~/.dsh/.agent-presets/renks/`). Evidence-based instruction delivery: no full AGENTS.md digest and no skill-catalog injection; `instruction-hint.mjs` injects one "read the instruction files" hint after the first tool call, and `skill-search.mjs` exposes `skill_search`/`skill_load`. Scale policy: search/load stays the default as the catalog grows; do not re-add catalog injection beyond ~3-5 skills.
 - `agents/claude-code/` - CLAUDE.md, settings.json, hooks, rules, commands (commands symlink to `skills/`).
 - `agents/gemini/` - GEMINI.md wrapper.
-- `skills/` - shared procedures (plan, onboard, context, review, ci, ship), symlinked to both `~/.dsh/skills` and `~/.claude/skills`.
+- `skills/` - shared procedures (plan, onboard, context, review, ci, ship, extend-config), symlinked to both `~/.dsh/skills` and `~/.claude/skills`.
 - The experimental `liangshen` preset (minimal-bootstrap anchoring) lives in `~/.dsh/.agent-presets/liangshen/` and is not tracked here.
 
 ## Reference library - `docs/`
