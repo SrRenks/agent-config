@@ -13,7 +13,7 @@ core/                    tool-free content
   templates/             .ai/ file templates
   principles.md          universal agent principles
 skills/                  one source of truth per procedure
-  plan/ onboard/ context/ review/ ci/ ship/   (SKILL.md dirs)
+  plan/ onboard/ context/ review/ ci/ ship/ extend-config/   (SKILL.md dirs)
 agents/                  per-tool adapters
   claude-code/           CLAUDE.md, settings.json, hooks/, rules/, commands/
   gemini/                GEMINI.md

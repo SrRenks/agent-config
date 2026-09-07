@@ -27,16 +27,18 @@ Shared across all projects; read on demand (AGENTS.md §3). Never copied into a 
 - `ai-directory.md` - the `.ai/` structure standard (files, names, creation rules)
 - `project-docs.md` - the committed docs/ + README standard (templates, naming, workflow)
 - `repository-map.md` - this file
+- `agent-config-authoring.md` - the spec for extending this repo (rules, skills, docs, templates, bridges)
 - `decisions/` - ADR template
 - `languages/` - go, kotlin, python, rust
 
 ## Agent support
-- `core/principles.md` - universal agent principles (Karpathy/llm-rigor + operational rules); complexity budgets single-sourced in `docs/complexity.md`
-- `rules/` - scoped rules (Claude Code, by path filter): go, python, rust, security, testing
-- `commands/` - slash commands: `ci`, `review` (incl. fresh-context review), `ship` (incl. fresh-context review)
-- `hooks/` - lifecycle hooks: `session-init` (opt-in), `lint-check`, `block-danger`
+- `core/principles.md` - universal agent principles (Karpathy/llm-rigor + operational rules); complexity budgets single-sourced in `core/docs/complexity.md`
+- `skills/` - shared procedures (dsh + Claude Code): plan, onboard, context, review, ci, ship, extend-config
+- `agents/claude-code/rules/` - scoped rules (dual frontmatter for Claude Code + Cursor): go, python, rust, security, testing
+- `agents/claude-code/commands/` - slash commands (symlinks into skills/): `ci`, `review`, `ship`
+- `agents/claude-code/hooks/` - lifecycle hooks: `session-init` (opt-in), `lint-check`, `block-danger`
 
-## Project templates - `templates/`
+## Project templates - `core/templates/`
 Seeded into `.ai/` by `ai-init` (per-project, gitignored):
 - `project.md` - project rules starter (stack, build/test/lint, conventions); `.ai/agents.md` is a symlink to `AGENTS.md`, not a template
 - `convention-doc.md` - template for agent-created convention docs (`.ai/docs/`): purpose, imperative rules, pointers

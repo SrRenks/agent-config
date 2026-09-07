@@ -1,7 +1,7 @@
 # AGENTS.md - v2026-09-06
 
 ## Scope and ownership
-- This configuration is the single source of truth for agent behavior. It is READ-ONLY for agents: never create, edit, or delete anything under `~/.config/agent-config/` unless the human explicitly orders it.
+- This configuration is the single source of truth for agent behavior. It is READ-ONLY for agents: never create, edit, or delete anything under `~/.config/agent-config/` unless the human explicitly orders it. When the human does order a change, follow `~/.config/agent-config/core/docs/agent-config-authoring.md` (or load the extend-config skill).
 - A project's agent configuration lives in its `.ai/` directory. `.ai/agents.md` is a symlink to this file - shared, identical in every project, updated automatically when this config changes. `.ai/project.md` holds project-specific rules. The `.ai/` structure is defined in `~/.config/agent-config/core/docs/ai-directory.md`.
 - Custom, project-specific instructions belong only in `.ai/project.md` and `.ai/docs/`. Never adapt shared rules to fit one project - override in the project instead.
 - Injection varies by tool: some tools auto-inject this file; others (including the dsh default preset) inject only a one-time hint. If unsure whether this file was injected, read it yourself at the start of work in any workspace.
@@ -53,6 +53,7 @@
 ## Section 3: Reference docs - shared, read on demand
 Read on demand; never copy them into projects. Paths below are relative to `~/.config/agent-config/`.
 - `.ai/` structure: `core/docs/ai-directory.md`
+- Extending this config (rules/skills/docs/templates): `core/docs/agent-config-authoring.md`
 - Onboarding: `core/docs/onboarding.md`
 - Project docs standard: `core/docs/project-docs.md`
 - Development workflow: `core/docs/development-workflow.md`
