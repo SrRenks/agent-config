@@ -37,7 +37,7 @@ context/ holds the project knowledge base: internal context future agents need (
 5. `README.md` is generated on demand by `ai-context` too (project-docs standard) with only the sections that apply - never copied from a template.
 
 ## Rules
-1. Top-level files are fixed: `agents.md` (symlink), `project.md`, `session.md`, `assumptions.md`, `scratchpad.md`. `context/` and `docs/` are optional, created on demand. Do not add other top-level files without updating this standard.
+1. Top-level files are fixed: `agents.md` (symlink), `project.md`, `session.md`, `assumptions.md`, `scratchpad.md`. `context/`, `docs/`, and `evals/` (retained eval runs, see `~/.config/agent-config/docs/evals.md`) are optional, created on demand. Do not add other top-level files without updating this standard.
 2. `docs/` files: one topic per file, lowercase kebab-case names (`git-workflow.md`, `testing.md`). Written as imperative rules - no fill-in placeholders.
 3. Content style: direct, imperative orders. Never write "context {describe here}" templates - write actual rules.
 4. `agents.md` is a symlink to `~/.config/agent-config/AGENTS.md` - never edit it (the shared config is READ-ONLY). Project rules live in `project.md`: imperative, placeholder-free directives, build/test/lint commands first.

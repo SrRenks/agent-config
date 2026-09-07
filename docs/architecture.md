@@ -1,7 +1,15 @@
 # System architecture
 
+Shared architecture standard for the agents. Project-specific architecture
+facts belong in the project's committed `docs/architecture.md` (human-facing,
+per `docs/project-docs.md`) and in `.ai/context/architecture.md` (agent-facing
+knowledge base). This file defines the rules agents follow; it is not a
+project template - write real facts into the project's files, never
+placeholders.
+
 ## High-level overview
-[Describe your system's main components and their interactions.]
+When creating a project's `docs/architecture.md`, document the system's main
+components and their interactions in one paragraph before any detail.
 
 ## Layers / modules
 - Presentation Layer: Handles user input (CLI, API, UI).
@@ -9,20 +17,19 @@
 - Data Access: Repositories, database clients, external API clients.
 
 ## Data flow
-[Explain how data moves through the system from request to response.]
+Project docs must explain how data moves through the system from request to
+response.
 
 ## Key components
-- Component A: Responsible for [X].
-- Component B: Responsible for [Y].
+Project docs list each key component and its responsibility.
 
 ## Technology stack
-- Language: [e.g., Go 1.24]
-- Framework: [e.g., Gin, Echo, none]
-- Database: [e.g., PostgreSQL 17]
-- Message Queue: [e.g., RabbitMQ, Kafka]
+Project docs state the real detected stack (language, framework, database,
+message queue). Do not invent entries.
 
 ## External dependencies
-- [List critical third-party services or libraries.]
+Project docs list critical third-party services or libraries. Create this
+section only when such dependencies exist.
 
 ## Ownership boundaries
 
@@ -47,7 +54,7 @@ Forbidden examples:
 - UI code importing ORM or network clients.
 - Domain entities using framework annotations that tie them to a specific infrastructure.
 
-Allowed:  
+Allowed:
 - Infrastructure providing implementations of domain interfaces (dependency inversion).
 - Application orchestrating use cases, calling domain services, and using infrastructure adapters.
 
@@ -63,4 +70,5 @@ style, dependency direction, or abstraction pattern for an already solved
 problem unless an ADR documents the technical justification.
 
 ## Evolution history
-- [Keep a log of major architectural decisions; see `docs/decisions/` for ADRs.]
+Keep a log of major architectural decisions; ADRs live in the project's
+`docs/decisions/` (template: `docs/decisions/ADR-template.md`).

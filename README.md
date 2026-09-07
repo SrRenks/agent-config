@@ -15,6 +15,11 @@ others) should behave across all your projects.
 - **Predictable agent behavior.** Non-negotiable rules: no flattery, explain
   changes, disagree with evidence, never fabricate, surgical edits only,
   test-first, complexity budgets, no new dependencies without approval.
+- **Lean by evidence.** Instructions are injected on demand, not dumped into
+  every request: the dsh default preset hints "instruction files exist, read
+  them" and exposes skills via `skill_search`/`skill_load` instead of a full
+  catalog (per the 2026-09 config review: context rot, Anthropic's
+  smallest-set-of-high-signal-tokens, ETH Zurich arXiv:2602.11988).
 
 ## Supported tools
 
@@ -71,17 +76,21 @@ ai-context   # detects stack, db, deps, conventions; generates context + README
 │   ├── ci.md              # /ci - run full CI pipeline locally
 │   ├── review.md          # /review - review pending changes
 │   └── ship.md            # /ship - prepare and commit
-├── hooks/                 # Claude Code hooks (PreToolUse, PostToolUse, SessionStart)
+├── hooks/                 # Claude Code hooks (PreToolUse, PostToolUse)
 │   ├── block-danger       # blocks rm -rf, sudo, git push --force, etc.
 │   ├── lint-check         # auto-lints files after edits
-│   └── session-init       # ensures .ai/ is set up on session start
+│   └── session-init       # OPT-IN (not wired in settings.json) - mirrors ai-init
 ├── rules/                 # scoped rules by language/concern
 │   ├── go.md
 │   ├── python.md
 │   ├── rust.md
-│   └── security.md
+│   ├── security.md
+│   └── testing.md
 ├── skills/                # agent skills (loaded as context)
 │   └── RULES.md           # universal agent principles (Karpathy, complexity budgets)
+├── dsh/                   # dsh harness integration
+│   ├── presets/renks/     # default preset: hint + skill_search/skill_load (no full injection)
+│   └── skills/            # plan, onboard, context, review, ci, ship (symlinked to ~/.dsh/skills)
 ├── docs/                  # reference docs (read on demand by agents)
 │   ├── ai-directory.md    # .ai/ directory standard
 │   ├── architecture.md
@@ -92,6 +101,7 @@ ai-context   # detects stack, db, deps, conventions; generates context + README
 │   ├── decisions/         # ADR template
 │   ├── dependency-policy.md
 │   ├── development-workflow.md
+│   ├── evals.md           # retained eval set for config changes
 │   ├── git-workflow.md
 │   ├── languages/         # go, kotlin, python, rust
 │   ├── maintainability.md

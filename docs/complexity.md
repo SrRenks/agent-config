@@ -3,9 +3,11 @@
 ## Rationale
 
 Complex code is agent drag - it is expensive for both humans and AI agents to
-navigate, understand, and modify. Studies of AI-assisted repositories show
-cognitive complexity rising by ~41% across iterations unless explicitly
-controlled. These budgets counteract that drift.
+navigate, understand, and modify. GitClear's "AI Copilot Code Quality" studies
+(2024-2025) measure rising churn, copy/pasted lines, and duplicated code
+blocks in AI-assisted repositories, with refactoring ("moved" lines)
+declining - see https://gitclear-public.s3.us-west-2.amazonaws.com/AI-Copilot-Code-Quality-2025.pdf
+(retrieved 2026-09-06). These budgets counteract that drift.
 
 Code that is ergonomic for AI is also better for humans.
 

@@ -14,5 +14,6 @@ Before you declare a task complete, run through this checklist and confirm each 
 - [ ] Duplication - no unnecessary code duplication introduced; if duplication is unavoidable, note why.
 - [ ] Maintainability - the change does not decrease the overall maintainability (e.g., Maintainability Index) without justification.
 - [ ] Diff review - you have reviewed your own diff for any unintended changes.
+- [ ] Fresh-context review - an independent review (subagent or second session without this conversation) found no blocking issues.
 
 If any checkbox is not satisfied, do not finish the task - fix the issue first.
