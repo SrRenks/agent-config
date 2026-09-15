@@ -5,13 +5,14 @@ This config is READ-ONLY for agents. Projects do not copy it: `ai-init` creates 
 
 ## Root level
 - `AGENTS.md` - universal agent rules (v2026-09-06). Symlinked as each project's `.ai/agents.md`; also linked to `~/.codex/AGENTS.md`, `~/.agents/AGENTS.md`, and `~/.dsh/AGENTS.md`.
-- `CLAUDE.md` - imports `AGENTS.md` + Claude Code specifics (model tiering policy). → `~/.claude/CLAUDE.md`.
-- `GEMINI.md` - imports `AGENTS.md` + Gemini specifics. → `~/.gemini/GEMINI.md`.
-- `CLAUDE.local.md` - personal preferences (not shared). → `~/.claude/CLAUDE.local.md`.
-- `settings.json` - Claude permissions + hooks (PreToolUse block-danger, PostToolUse lint-check; session-init is OPT-IN and not wired). → `~/.claude/settings.json`.
-- `claudeignore` - never-access patterns. → `~/.claudeignore`.
+- `README.md` - human overview: what the config is, how it reaches each tool, how to install and extend it.
+- `LICENSE` - MIT.
+- `setup.sh` - one-time global install: every tool bridge (symlinks), the `~/.local/bin` commands, and the git identity include.
 - `ai-init` - creates the project's `.ai/` directory (agents.md symlink, project.md, memory files, docs/) and gitignores it. → `~/.local/bin/ai-init`.
-- `setup.sh` - one-time global install (creates the `~/.claude`, `~/.codex`, `~/.gemini`, `~/.agents` links).
+- `ai-context` - generates `.ai/context/` topic files and the project README on demand. → `~/.local/bin/ai-context`.
+- `core/` - tool-free content: `core/docs/` (reference library), `core/principles.md`, `core/templates/`.
+- `agents/` - per-tool adapters: `claude-code/` (CLAUDE.md, CLAUDE.local.md, settings.json, hooks, rules, commands, claudeignore), `gemini/`, `dsh/`.
+- `skills/` - shared procedures, symlinked to `~/.claude/skills` and `~/.dsh/skills`.
 
 ## Tool integrations - `agents/`
 - `agents/dsh/presets/renks/` - the DEFAULT dsh preset (mirrors the live roster `~/.dsh/.agent-presets/renks/`). Evidence-based instruction delivery: no full AGENTS.md digest and no skill-catalog injection; `instruction-hint.mjs` injects one "read the instruction files" hint after the first tool call, and `skill-search.mjs` exposes `skill_search`/`skill_load`. Scale policy: search/load stays the default as the catalog grows; do not re-add catalog injection beyond ~3-5 skills.
@@ -20,7 +21,7 @@ This config is READ-ONLY for agents. Projects do not copy it: `ai-init` creates 
 - `skills/` - shared procedures (plan, onboard, context, review, ci, ship, extend-config), symlinked to both `~/.dsh/skills` and `~/.claude/skills`.
 - The experimental `liangshen` preset (minimal-bootstrap anchoring) lives in `~/.dsh/.agent-presets/liangshen/` and is not tracked here.
 
-## Reference library - `docs/`
+## Reference library - `core/docs/`
 Shared across all projects; read on demand (AGENTS.md §3). Never copied into a project - a project's `docs/` holds project docs only.
 - `architecture.md`, `coding-standards.md`, `testing.md`, `security.md`, `complexity.md`, `coupling.md`, `debugging.md`, `maintainability.md`, `performance.md`, `development-workflow.md`, `validation-checklist.md`, `dependency-policy.md`, `git-workflow.md`, `onboarding.md`
 - `evals.md` - retained eval set (anchor checks + task set) to run before changing the default preset or shared rules
