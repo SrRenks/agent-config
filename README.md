@@ -42,30 +42,55 @@ bash agents/dsh/install.sh    # dsh preset and shared skills (optional)
 anywhere, and it is safe to re-run. A real file sitting where a symlink will go
 is copied to `backups/<timestamp>/` first, so nothing is lost.
 
-## Per-project setup
+## The `.ai/` directory
 
-Run these from inside a project directory:
+Every project gets its own `.ai/`: the agent's working memory for that project,
+local to the machine and never committed. This is the other half of the
+read-only model. The shared config holds what is true for all projects, and
+`.ai/` holds what is true for one of them.
 
 ```bash
-ai-init      # creates .ai/ and links .ai/agents.md to this config
-ai-context   # writes .ai/context/ topic files and the project README on demand
+cd ~/Projects/my-app
+ai-init      # creates .ai/, links ./AGENTS.md, adds the .gitignore entry
+ai-context   # writes context topic files and the project README, once the project has content
 ```
 
-`.ai/` holds what is specific to that project, and `ai-init` gitignores it:
+| Path | Role | Ownership |
+|---|---|---|
+| `.ai/agents.md` | symlink to this config's `AGENTS.md` | shared, never edited |
+| `.ai/project.md` | stack, build/test/lint commands, local conventions | project |
+| `.ai/session.md` | current session state, written at the end of a task | project |
+| `.ai/assumptions.md` | decision log, one numbered entry per decision | project |
+| `.ai/scratchpad.md` | working notes, commands, investigation results | project |
+| `.ai/context/index.md` | maturity, stack, pointers, open gaps | machine, refreshed on every `ai-context` run |
+| `.ai/context/<topic>.md` | domain, architecture, database, dependencies, conventions | created once, then never overwritten |
+| `.ai/docs/` | project-specific convention docs, created on demand | project |
 
-| File | Contents |
-|---|---|
-| `.ai/agents.md` | symlink to this repo's `AGENTS.md`, do not edit |
-| `.ai/project.md` | stack, build/test/lint commands, local conventions |
-| `.ai/session.md` | current session state |
-| `.ai/assumptions.md` | decision log |
-| `.ai/scratchpad.md` | working notes |
-| `.ai/context/` | domain, architecture, database, dependencies, conventions |
-| `.ai/docs/` | project-specific convention docs |
+How it behaves:
 
-`ai-context` writes only the files that apply: a project with no database gets no
-`database.md` and no storage row in the README. Files it created before are left
-alone unless you pass `--force`, which refreshes `index.md` and `README.md`.
+- The shared rules arrive by symlink. Editing `AGENTS.md` here updates
+  `.ai/agents.md` in every project at once, and no project keeps a copy to drift.
+- `ai-init` also links `./AGENTS.md` in the project root, which is the path Codex,
+  Cursor, Windsurf, Amp, Jules, and Claude Code look for.
+- `.ai/` stays out of git. `ai-init` writes the entry into the project's
+  `.gitignore`, so project knowledge never enters the repository's history and
+  never reaches a teammate who does not need it.
+- `ai-init` records project maturity. It reads git history and build files and
+  stamps the result (NEW or EXISTING) into `context/index.md`, which decides
+  whether the agent onboards first or starts building.
+- Nothing is generated from a blank template. `ai-context` writes only the files
+  that apply, so a project with no database gets no `database.md` and no storage
+  row in the README.
+- Files already written are left alone. `--force` refreshes only `index.md` and
+  `README.md`, which keeps hand-written knowledge safe from a re-run.
+- Topic files open with detected facts and explicit open questions. Answers
+  replace the questions as they are confirmed, so the knowledge base grows out of
+  real sessions instead of placeholders.
+- Project rules win. When a project needs different behavior, the rule goes in
+  `.ai/project.md`; shared rules never bend to fit one project.
+
+`core/docs/ai-directory.md` is the full standard, including when a `.ai/docs/`
+file is worth creating instead of a line in `project.md`.
 
 ## Repository layout
 
@@ -101,6 +126,55 @@ adapters, the reference library, and the templates.
   Cursor, Windsurf, Amp, Jules, and Claude Code look for.
 - Editing a rule and pulling updates every tool and every project, because the
   bridges are symlinks. Only the dsh preset needs its installer re-run.
+
+## dsh and the `renks` preset
+
+dsh (DeepSeek Harness) is the harness this config is tuned against. It runs the
+agent loop locally, loads the shared rules from the `~/.dsh/AGENTS.md` symlink,
+and discovers procedures from `~/.dsh/skills`, which points at `skills/`. It is
+also the one tool here whose prompt composition can be patched, which is why the
+leaner delivery lives in a dsh preset instead of in the shared rules.
+
+The stock dsh recipe injects the full instruction files and the whole skill
+catalog into the first request of every session. That spends context before any
+work happens, and it moves the model's first step: the retained anchor checks
+measured 0 of 9 first requests anchored with the catalog injected and about 81
+percent without (`core/docs/evals.md`, issue #6).
+
+The `renks` preset keeps the same rules and skills while removing both
+injections:
+
+| Stock behavior | Replaced by | What happens instead |
+|---|---|---|
+| `dsh-agent-instructions` inlines the `AGENTS.md` / `CLAUDE.md` digest | `instruction-hint.mjs` | one hint per session, after the first durable promotion signal: the instruction files exist, read them before acting |
+| `dsh-tool-skill` injects the ~9KB `<available_skills>` catalog into the first step and again after every promotion or compaction | `skill-search.mjs` | `skill_search` lists matching names on demand, `skill_load` pulls one body; the catalog costs nothing until a task needs it |
+
+`compaction-epoch.mjs` backs both plugins. It tracks the compaction boundary so a
+promotion signal recorded before a compaction does not count after it. The two
+plugins import only each other, never dsh internals, so an upstream release does
+not break them.
+
+A dsh update stays a merge, not a rewrite. The repo commits no copy of the stock
+recipe; `agents/dsh/presets/renks/` holds three parts:
+
+- `stock-baseline.agent.cordis.yml` is the frozen base the patch was made
+  against, kept byte-identical as the merge base.
+- `agent.cordis.patch` is the personal delta, the two swaps above.
+- `fallback.agent.cordis.yml` is the last-known-good generated recipe.
+
+`agents/dsh/install.sh` 3-way merges the patch onto whichever dsh version is
+installed, validates the YAML, and installs the fallback when the merge
+conflicts. It also links `~/.dsh/AGENTS.md` and `~/.dsh/skills` into this repo
+and sets `agent-presets.default: renks` in `~/.dsh/settings.yaml`. After a dsh
+upgrade:
+
+```bash
+git pull && bash agents/dsh/install.sh
+```
+
+On-demand search stays the default as the skill list grows. Injecting the catalog
+only pays off while there are a handful of skills, so it should not come back
+past roughly three to five.
 
 ## What agents are told
 
