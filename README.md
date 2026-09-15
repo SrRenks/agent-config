@@ -396,3 +396,5 @@ cost, Diataxis, Keep a Changelog, Conventional Commits, the OWASP standards, and
 the work of Parnas, Yourdon and Constantine, Feathers, Nygard, Knuth, and Chroma.
 If a rule here misstates its source, or a source is missing, the fix belongs in
 that file.
+
+Thank you all. Long live knowledge and open source. =)
