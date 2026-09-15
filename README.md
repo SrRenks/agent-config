@@ -88,6 +88,15 @@ How it behaves:
   real sessions instead of placeholders.
 - Project rules win. When a project needs different behavior, the rule goes in
   `.ai/project.md`; shared rules never bend to fit one project.
+- `.ai/` holds the agent's working memory for one project. Technical
+  documentation that humans read, such as architecture and design decisions,
+  belongs in the repository's committed `docs/` under the
+  `core/docs/project-docs.md` standard. `.ai/docs/` holds only genuine deviations
+  from the shared config; when the shared config already covers a convention,
+  reference it instead of copying it.
+- The memory loop closes at the end of a task: session state goes into
+  `session.md`, new decisions append to `assumptions.md`, and finished notes are
+  pruned from `scratchpad.md`, so the next session starts oriented.
 
 `core/docs/ai-directory.md` is the full standard, including when a `.ai/docs/`
 file is worth creating instead of a line in `project.md`.
