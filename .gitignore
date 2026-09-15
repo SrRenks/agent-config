@@ -3,3 +3,6 @@ backups/
 
 # Retained eval runs (see docs/evals.md) - local measurement data, not config
 evals/
+
+# Personal git identity - lives in ~/.config/git/identity, never in this repo
+gitconfig

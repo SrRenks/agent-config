@@ -58,10 +58,11 @@ Project-specific deviations go in the project's `.ai/docs/git-workflow.md` (loca
 
 ## History hygiene
 - Never rewrite history after it has been pushed/shared.
+- Sole exception: secrets, credentials, or personal data committed by mistake. Purge them from every commit (`git filter-branch --index-filter` / `git filter-repo`), clean refs and reflog, force-push, then rotate whatever was exposed.
 - No scratch notes, tool artifacts, or generated files in commits.
 
 ## Git identity & auth
 - Identity (user.name, user.email) is commit metadata, not authentication. Git resolves it local → global → system; a repo's `.git/config` always wins.
-- Do not hard-code a global identity in `~/.gitconfig`. Identity is directory-scoped via conditional includes: `~/.gitconfig` includes this repo's `gitconfig` for `~/Projects/` and `~/.config/`.
-- Add or change a per-directory identity by editing the tracked `gitconfig` and pushing; it applies on install.
+- Do not hard-code a global identity in `~/.gitconfig`. Identity is directory-scoped via conditional includes: `~/.gitconfig` includes `~/.config/git/identity` for `~/Projects/` and `~/.config/`.
+- Personal identity is never tracked in a repo. Set or change it in `~/.config/git/identity` (mode 600); the includes pick it up with no reinstall.
 - Auth is SSH and machine-level, never git config. GitHub auth uses the default key `~/.ssh/id_ed25519`; `~/.ssh/config` has no `github.com` entry.

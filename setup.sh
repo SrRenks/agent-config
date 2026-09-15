@@ -52,12 +52,21 @@ symlink "$SRC/AGENTS.md" "$HOME/.agents/AGENTS.md"
 
 # ── Git identity (directory-scoped; see core/docs/git-workflow.md) ─────────────
 GC="$HOME/.gitconfig"
-if grep -q 'agent-config/gitconfig' "$GC" 2>/dev/null; then
-    echo "  skip: ~/.gitconfig already includes the repo gitconfig"
+IDENT="$HOME/.config/git/identity"
+if [ ! -f "$IDENT" ]; then
+    mkdir -p "$(dirname "$IDENT")"
+    NAME=$(git config --global user.name 2>/dev/null || true)
+    EMAIL=$(git config --global user.email 2>/dev/null || true)
+    printf '[user]\n\tname = %s\n\temail = %s\n' "${NAME:-YOUR NAME}" "${EMAIL:-you@example.com}" > "$IDENT"
+    chmod 600 "$IDENT"
+    echo "  created: $IDENT (personal data - never tracked in a repo)"
+fi
+if grep -q 'config/git/identity' "$GC" 2>/dev/null; then
+    echo "  skip: ~/.gitconfig already includes $IDENT"
 else
     mkdir -p "$(dirname "$GC")"
-    printf '\n[includeIf "gitdir:~/Projects/**"]\n\tpath = %s/gitconfig\n[includeIf "gitdir:~/.config/**"]\n\tpath = %s/gitconfig\n' "$SRC" "$SRC" >> "$GC"
-    echo "  wired: ~/.gitconfig includes $SRC/gitconfig for ~/Projects/** and ~/.config/**"
+    printf '\n[includeIf "gitdir:~/Projects/**"]\n\tpath = %s\n[includeIf "gitdir:~/.config/**"]\n\tpath = %s\n' "$IDENT" "$IDENT" >> "$GC"
+    echo "  wired: ~/.gitconfig includes $IDENT for ~/Projects/** and ~/.config/**"
 fi
 
 # ── ai-init / ai-context commands ────────────────────────────────────────────
@@ -75,7 +84,7 @@ echo "  Gemini CLI  : ~/.gemini/GEMINI.md"
 echo "  Cursor      : ~/.cursor/rules"
 echo "  Generic     : ~/.agents/AGENTS.md"
 echo "  Commands    : ~/.local/bin/ai-init, ai-context"
-echo "  Git identity : ~/.gitconfig (conditional include of gitconfig)"
+echo "  Git identity : ~/.config/git/identity (conditional include from ~/.gitconfig)"
 echo ""
 echo "dsh (DeepSeek Harness) is installed separately:"
 echo "  bash \"$SRC/agents/dsh/install.sh\""
