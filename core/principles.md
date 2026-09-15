@@ -44,3 +44,5 @@
 ## Security
 - See `~/.config/agent-config/core/docs/security.md`.
 - Never log passwords, tokens, secrets, or private data.
+
+Sources: `core/docs/sources.md`, sections "Agent behavior, context, and instructions" and "Complexity, design, and maintainability".

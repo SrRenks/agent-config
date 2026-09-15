@@ -53,3 +53,5 @@ Even if individual functions stay within limits, the repository as a whole can d
 - Use CI to track aggregate complexity metrics (e.g., sum of cognitive complexity across all functions). If the total increases by more than 5% in a single PR, the PR should include a justification.
 
 Rationale: This prevents the "death by a thousand cuts" - many small, individually acceptable changes that accumulate into an unmaintainable codebase.
+
+Sources: `core/docs/sources.md`, section "Complexity, design, and maintainability".

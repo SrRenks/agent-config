@@ -72,3 +72,5 @@ problem unless an ADR documents the technical justification.
 ## Evolution history
 Keep a log of major architectural decisions; ADRs live in the project's
 `docs/decisions/` (template: `docs/decisions/ADR-template.md`).
+
+Sources: `core/docs/sources.md`, section "Complexity, design, and maintainability".

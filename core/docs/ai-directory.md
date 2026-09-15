@@ -57,3 +57,5 @@ context/ holds the project knowledge base: internal context future agents need (
 - Imperative rules only; no placeholders; no generic information the model already knows.
 - Prefer pointers over embedding content (index, not dump).
 - New directories under `.ai/docs/` require justification - prefer flat files.
+
+Sources: `core/docs/sources.md`, sections "Repo design decisions" and "Agent behavior, context, and instructions".

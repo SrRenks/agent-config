@@ -28,3 +28,5 @@ Before adding a dependency:
 3. Check security history.
 4. Consider binary size and runtime impact.
 5. Document the reason for adoption.
+
+Sources: `core/docs/sources.md`, sections "Dependencies" and "Security".

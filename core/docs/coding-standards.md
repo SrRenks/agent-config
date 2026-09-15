@@ -188,3 +188,5 @@ Before refactoring:
 - make incremental changes.
 
 Do not refactor code only because it is stylistically different.
+
+Sources: `core/docs/sources.md`, sections "Complexity, design, and maintainability" and "Prose and AI writing".

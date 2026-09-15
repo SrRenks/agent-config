@@ -39,3 +39,5 @@ Do not add tests only to increase coverage numbers.
 - Tests must pass before merging.
 - Code coverage must not decrease.
 - Linter must pass with zero warnings.
+
+Sources: `core/docs/sources.md`, section "Testing".

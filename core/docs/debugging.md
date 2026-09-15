@@ -20,3 +20,5 @@
 - Document the root cause.
 - Share learnings with the team.
 - Improve tests and monitoring.
+
+Sources: `core/docs/sources.md`, section "Process, operations, and debugging".

@@ -1000,3 +1000,5 @@ jobs:
 - When creating a new doc manually, start from the template and fill every field.
 - Project-specific deviations from this standard go in `.ai/docs/project-docs.md`.
 - Overrides must state what they change and why.
+
+Sources: `core/docs/sources.md`, sections "Documentation standards" and "Git, commits, and releases".

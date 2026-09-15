@@ -61,3 +61,5 @@ Go to implementation only after the plan is approved. Trivial one-sentence diffs
 - Minimum viable code - solve the problem, not the imagined future
 - No sycophancy - disagree when evidence contradicts
 - Pushback scales with certainty - probe harder when user sounds confident
+
+Sources: `core/docs/sources.md`, sections "Agent behavior, context, and instructions" and "Internal, measured".

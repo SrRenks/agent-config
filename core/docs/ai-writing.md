@@ -43,3 +43,5 @@ These are tells that make prose read as template AI output. They are not errors 
 4. Commit messages and PR titles: apply the vocabulary cuts; skip procedural statements.
 
 Source: condensed from https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing (a descriptive Wikipedia essay; reworked here as prescriptive rules with Wikipedia-only items dropped).
+
+Sources: `core/docs/sources.md`, section "Prose and AI writing".

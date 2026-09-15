@@ -52,3 +52,5 @@ Security review is required when modifying:
 - network boundaries
 - user input processing
 - secrets handling
+
+Sources: `core/docs/sources.md`, section "Security".

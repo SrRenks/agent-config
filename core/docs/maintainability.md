@@ -49,3 +49,5 @@ Prefer changes that reduce:
 - cognitive complexity
 
 Use automated metrics as indicators, not as goals.
+
+Sources: `core/docs/sources.md`, section "Complexity, design, and maintainability".

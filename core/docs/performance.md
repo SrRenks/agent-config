@@ -37,3 +37,5 @@ Document:
 
 Do not optimize based on assumptions. A benchmark, profiler data, or production
 metrics must justify the change before it adds performance-specific complexity.
+
+Sources: `core/docs/sources.md`, section "Complexity, design, and maintainability".

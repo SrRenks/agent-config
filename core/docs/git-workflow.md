@@ -66,3 +66,5 @@ Project-specific deviations go in the project's `.ai/docs/git-workflow.md` (loca
 - Do not hard-code a global identity in `~/.gitconfig`. Identity is directory-scoped via conditional includes: `~/.gitconfig` includes `~/.config/git/identity` for `~/Projects/` and `~/.config/`.
 - Personal identity is never tracked in a repo. Set or change it in `~/.config/git/identity` (mode 600); the includes pick it up with no reinstall.
 - Auth is SSH and machine-level, never git config. GitHub auth uses the default key `~/.ssh/id_ed25519`; `~/.ssh/config` has no `github.com` entry.
+
+Sources: `core/docs/sources.md`, section "Git, commits, and releases".

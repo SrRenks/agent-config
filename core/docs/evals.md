@@ -53,3 +53,5 @@ result is stable or better - and never because of a public-benchmark number.
   presets to default.
 - Update this file when a check keeps catching regressions (add it) or never
   fires (remove it - context rot applies to evals too).
+
+Sources: `core/docs/sources.md`, section "Internal, measured".
