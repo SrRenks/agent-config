@@ -52,7 +52,7 @@ Templates:
 5. New rule: nothing else needed (auto-loaded by Claude Code and Cursor).
 6. Preset changes: follow the agents/dsh/presets/renks/README.md patch flow; run the retained eval set (core/docs/evals.md) before changing defaults.
 7. Commit: conventional message, plain wording, explicit files only, never git add -A. Wait for human approval before committing (AGENTS.md section 1 rule 8).
-8. New behavioral rule or numeric threshold: add its source to core/docs/sources.md in the same commit; label it community practice if no source exists.
+8. New behavioral rule or numeric threshold: add its entry to core/docs/sources.md in the same commit, naming the source, the URL or DOI, the retrieval date, and the claim it justifies. With no citable source, label the claim repo design or community practice. A file that ends without a Sources line gets one.
 
 ## Validation before finishing
 - Scripts: bash -n <file>.
@@ -62,6 +62,7 @@ Templates:
 - Rule frontmatter: description, globs, paths present.
 - Symlinks: find . -type l ! -exec test -e {} \; -print must return nothing.
 - Human-facing prose: scan against core/docs/ai-writing.md and fix the tells.
+- Provenance: every numeric threshold in the changed files has an entry in core/docs/sources.md; check with grep -rnE '[<>≤≥] ?[0-9]+' core/docs/*.md.
 
 ## Procedure
 1. Classify the request: rule, skill, doc, template, preset, or bridge.

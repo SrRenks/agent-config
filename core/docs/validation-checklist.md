@@ -8,6 +8,7 @@ Before you declare a task complete, run through this checklist and confirm each 
 - [ ] Architecture - the change respects the architectural dependency rules (see `docs/architecture.md`).
 - [ ] Dependencies - no new dependencies without approval; existing ones are up-to-date and secure.
 - [ ] Documentation - updated relevant docs (e.g., API, README, ADR) if behavior changed.
+- [ ] Provenance - every new rule or numeric threshold in this change has an entry in `core/docs/sources.md` with a retrieval date; anything without a source is labeled repo design or community practice.
 - [ ] Public APIs - no breaking changes unless explicitly agreed; migration plan documented.
 - [ ] Security - no new vulnerabilities (run security scans if available); secrets are not exposed.
 - [ ] Performance - no obvious performance regressions; if performance is critical, run benchmarks.
@@ -17,3 +18,5 @@ Before you declare a task complete, run through this checklist and confirm each 
 - [ ] Fresh-context review - an independent review (subagent or second session without this conversation) found no blocking issues.
 
 If any checkbox is not satisfied, do not finish the task - fix the issue first.
+
+Sources: `core/docs/sources.md`, sections "Testing", "Security", and "Complexity, design, and maintainability".
