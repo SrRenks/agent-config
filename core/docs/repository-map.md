@@ -29,7 +29,7 @@ Shared across all projects; read on demand (AGENTS.md §3). Never copied into a 
 - `project-docs.md` - the committed docs/ + README standard (templates, naming, workflow)
 - `repository-map.md` - this file
 - `agent-config-authoring.md` - the spec for extending this repo (rules, skills, docs, templates, bridges)
-- `sources.md` - provenance of rules, design choices, and thresholds (primary sources, internal evals, community practice)
+- `sources.md` - provenance of every rule, design choice, and threshold, grouped by domain: cited sources with retrieval dates, internal measurements, repo design decisions, and the commit that introduced each file type
 - `decisions/` - ADR template
 - `languages/` - go, kotlin, python, rust
 
