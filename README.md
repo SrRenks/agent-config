@@ -276,10 +276,15 @@ point and names every shared doc with its path.
 | `agent-config-authoring.md` | how to add rules, skills, docs, and templates to this repo |
 | `ai-writing.md` | prose rules for anything a human reads |
 | `evals.md` | the retained eval set that gates changes to the shared rules |
-| `sources.md` | where each rule, threshold, and design choice came from |
+| `sources.md` | where each rule, threshold, and design choice came from, by domain, with retrieval dates |
 
 `core/docs/repository-map.md` describes the full layout, including the language
 guides in `core/docs/languages/` and the ADR template in `core/docs/decisions/`.
+
+`core/principles.md` sits outside `core/docs/` and holds the behavior rules an
+agent loads before planning: Karpathy-style rigor plus operational rules such as
+one task at a time and never committing without approval, complexity budgets, and
+the anti-patterns list.
 
 ## Git identity
 
@@ -324,15 +329,70 @@ matching the directory. Rule frontmatter needs `description`, `globs`, and
 `agents/dsh/presets/renks/README.md`.
 
 Prose in the README, docs, comments, and commit messages is checked against
-`core/docs/ai-writing.md`.
+`core/docs/ai-writing.md`, which lists the vocabulary and sentence patterns that
+make text read as machine output. It applies to prose written into files humans
+read; chat replies and `.ai/` files are exempt.
+
+The checklist an agent runs before declaring a task done is a separate document:
+`core/docs/validation-checklist.md`.
 
 ## Status
 
 Used daily on this machine across Claude Code, Cursor, and dsh. The dsh preset
 tracks whichever dsh version is installed through a patch instead of freezing a
-copy of the upstream recipe. Changes to the default preset or the shared rules
-run against the retained eval set in `core/docs/evals.md` first.
+copy of the upstream recipe.
+
+Changes to the default preset or the shared rules face the retained eval set in
+`core/docs/evals.md` first: anchor checks that always run, plus a task set for
+substantive work. The gate is that success rate does not drop and cost per solved
+task does not rise materially. Public benchmark scores are not treated as
+evidence.
 
 ## License
 
 MIT. See `LICENSE`.
+
+## Sources and acknowledgements
+
+This config is assembled from other people's work. `core/docs/sources.md` records
+every source with its retrieval date and what it backs, split between the sources
+behind specific rules and the practitioner writing that shaped the stance. The
+people below are the ones it leans on most.
+
+- Fabio Akita (`akitaonrails`), for the position that AI-assisted work ships under
+  the same review standard as any other code, and for `ai-memory`, an independent
+  build of the same idea behind `.ai/`: agent memory as versioned markdown, with
+  writes gated by evaluation.
+- Robert C. Martin and Justin Martin. The function rules in Clean Code (small
+  functions, one thing per function, few arguments, one level of abstraction)
+  state in prose what this repo enforces in numbers; Clean Architecture covers
+  dependency direction. Their Clean AI: Agentic Discipline series makes the
+  argument the guardrails act on: discipline an agent cannot be trusted to
+  remember belongs in the tooling.
+- Andrej Karpathy, for the llm-rigor principles: think before coding, surgical
+  changes, minimum viable code, and pushback that scales with certainty.
+- HumanLayer, for the Research-Plan-Implement to CRISPY talk, which supplied the
+  CRISPY name and phase structure, and the argument that always-on prompt budget
+  is scarce.
+- Anthropic, for Claude's Character and the sycophancy research behind the
+  non-negotiables, the context engineering guidance behind the lean injection
+  policy, and the skills pattern that `skill_search` mirrors.
+- Matt Pocock, for publishing his own agent skills, a working reference for how a
+  skill directory and its frontmatter should look.
+- Martin Fowler and Kent Beck, for the test pyramid and self-testing code that the
+  testing rules follow, and for writing about augmented coding as it develops.
+- Thomas McCabe and G. Ann Campbell, for the two complexity metrics this repo
+  budgets against, and the maintainers of `zj-karina/complexity-budget` for the
+  numeric budgets themselves.
+- Google, for the developer style guide, the engineering practices on code
+  review, and the SRE postmortem culture.
+- Simon Willison, for documenting in public what agent tooling does in practice,
+  failure modes included.
+
+Papers, standards, and studies behind the rest of the rules are listed in
+`core/docs/sources.md`: among them the Wikipedia WikiProject AI Cleanup essay on
+the signs of AI writing, the ETH Zurich study on instruction bloat and inference
+cost, Diataxis, Keep a Changelog, Conventional Commits, the OWASP standards, and
+the work of Parnas, Yourdon and Constantine, Feathers, Nygard, Knuth, and Chroma.
+If a rule here misstates its source, or a source is missing, the fix belongs in
+that file.
