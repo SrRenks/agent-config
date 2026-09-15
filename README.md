@@ -192,6 +192,58 @@ ownership, non-negotiables, project entry, the CRISPY workflow, memory files, th
 no-go list, and tool usage. Read it directly for the rules; depth lives in
 `core/docs/`, which agents load on demand.
 
+## The workflow
+
+The config names its workflow CRISPY, after the ZenML LLMOps Database entry cited
+in `core/docs/sources.md`. The shape here is the earlier Research, Plan, Implement
+method that entry evolved from: three phases, each ending in a gate.
+`core/docs/development-workflow.md` has the detail.
+
+- Analysis. Classify the project as NEW or EXISTING, survey the repository, and
+  write a numbered plan with success criteria for anything multi-file or
+  uncertain. Assumptions land in `.ai/assumptions.md`. Gate: the plan is approved
+  before implementation starts.
+- Implementation. One task at a time, tests written before the code, diffs that
+  trace back to the request, complexity budgets checked as work proceeds, linters
+  and tests clean before moving on. Gate: budgets, linters, and tests pass.
+- Review. Self-review the diff, then one ruthless edit of your own diff to remove
+  dead code, abstractions, and noise comments. The result goes to a fresh-context
+  reviewer, a subagent or second session that does not share the conversation, to
+  hunt bugs, overreach, and unintended changes. Then the validation checklist and
+  the prose scan. Gate: human approval before the commit.
+
+The separate context is the point of the review step: a reviewer working from the
+same session inherits the author's assumptions.
+
+## Guardrails
+
+Claude Code gets two hooks, wired in `agents/claude-code/settings.json`:
+
+- `block-danger` runs before a Bash call and denies a fixed list: recursive
+  deletes, `sudo`, `git push --force`, `chmod 777`, raw disk writes (`dd`,
+  `mkfs`, `> /dev/sda`), and `git add -A` or `git add .`, which the shared rules
+  ban for every tool.
+- `lint-check` is meant to report lint output after a file write or edit, for
+  Python, Go, and Rust files whose linter is installed. As shipped it returns
+  before linting: the hook compares `tool_name` against lowercase `write` and
+  `edit`, while the matcher in `settings.json` says `Write|Edit`.
+
+`session-init` is the one piece that waits to be asked for. It would create `.ai/`
+wherever a session starts, which surprised projects that chose not to initialize,
+so it ships unwired, with the snippet to wire it at the top of the file.
+`claudeignore` is wired by `setup.sh` as `~/.claudeignore`: `.env` files, keys,
+`credentials/`, `secrets/`, `*.tfstate`, `*.tfvars`, and build or vendor
+directories are never opened.
+
+`settings.json` also carries the permission lists. A set of routine commands is
+pre-approved: builds, tests, git read commands, file inspection, and network
+fetches. Denied outright: `git push`, every `rm`, `git add -A`, `sudo`,
+`chmod 777`, `chown`, `shutdown`, `reboot`, `mkfs`, and `dd`.
+
+The shared rules carry the git-add ban for every tool. The destructive-command
+list lives only in the Claude Code hook and its settings, so other tools do not
+inherit it.
+
 ## Skills
 
 | Skill | What it does |
