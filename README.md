@@ -255,6 +255,9 @@ inherit it.
 | `review` | reviews the pending diff, unpushed commits, linters, and tests |
 | `ship` | prepares a commit: verifies the staged diff, writes the message, runs the pre-commit checks |
 | `ci` | runs lint, test, build, and security scan locally, then reports pass or fail |
+| `debug` | works a bug down systematically: reproduce, isolate, verify assumptions, fix the cause, keep the regression test |
+| `worktrees` | does the work in a git worktree so the main checkout stays untouched, then lands and cleans up the branch |
+| `dispatch` | splits independent work across parallel subagents and verifies each result before merging it |
 | `extend-config` | creates or updates files in this repo following the authoring spec |
 
 ## Reference docs
