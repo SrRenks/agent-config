@@ -32,7 +32,7 @@ project's `.ai/` directory; shared rules stay project-agnostic.
 ## Install
 
 ```bash
-git clone git@github.com:SrRenks/agent-config.git ~/.config/agent-config
+git clone git@github.com:SrRenks/prometheus-ai.git ~/.config/agent-config
 cd ~/.config/agent-config
 ./setup.sh                    # tool bridges and the git identity include
 bash agents/dsh/install.sh    # dsh preset and shared skills (optional)
