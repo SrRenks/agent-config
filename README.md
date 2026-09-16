@@ -65,6 +65,7 @@ ai-context   # writes context topic files and the project README, once the proje
 | `.ai/context/index.md` | maturity, stack, pointers, open gaps | machine, refreshed on every `ai-context` run |
 | `.ai/context/<topic>.md` | domain, architecture, database, dependencies, conventions | created once, then never overwritten |
 | `.ai/docs/` | project-specific convention docs, created on demand | project |
+| `.ai/evals/` | retained eval runs, optional | project, see `core/docs/evals.md` |
 
 How it behaves:
 
@@ -310,7 +311,8 @@ covers the resolution order.
 3. Run the wiring checklist: new docs go into `AGENTS.md` section 3, structure
    changes into `core/docs/repository-map.md`, new claims into
    `core/docs/sources.md`.
-4. Commit with a conventional message, staging explicit files only.
+4. Commit with a conventional message, one logical change per commit, staging
+   explicit files only.
 
 ## Validation
 
@@ -336,6 +338,11 @@ Prose in the README, docs, comments, and commit messages is checked against
 `core/docs/ai-writing.md`, which lists the vocabulary and sentence patterns that
 make text read as machine output. It applies to prose written into files humans
 read; chat replies and `.ai/` files are exempt.
+
+Provenance is checked too: a new rule or numeric threshold needs an entry in
+`core/docs/sources.md` with a retrieval date, and the rule doc ends with a
+`Sources:` line naming the sections that justify it. Anything without a source is
+labeled repo design or community practice.
 
 The checklist an agent runs before declaring a task done is a separate document:
 `core/docs/validation-checklist.md`.
