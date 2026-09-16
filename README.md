@@ -1,4 +1,4 @@
-# agent-config
+# prometheus-ai
 
 One set of instructions, skills, and reference docs for coding agents, shared by
 Claude Code, Codex, Gemini CLI, Cursor, and dsh (DeepSeek Harness).
@@ -404,5 +404,8 @@ amplifier, OWASP's application and LLM top tens, Jakob Nielsen on AI usability,
 Diataxis, Keep a Changelog, Conventional Commits, and the work of Parnas, Yourdon
 and Constantine, Feathers, Nygard, Knuth, and Chroma. If a rule here misstates
 its source, or a source is missing, the fix belongs in that file.
+
+Named after the Prometheus Circuit in Chrono Trigger, the machine that directs the
+others and answers to the people who keep it.
 
 Thank you all. Long live knowledge and open source. =)
