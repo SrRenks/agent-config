@@ -187,7 +187,7 @@ past roughly three to five.
 
 ## What agents are told
 
-`AGENTS.md` is the contract every tool receives: 98 lines covering scope and
+`AGENTS.md` is the contract every tool receives: 95 lines covering scope and
 ownership, non-negotiables, project entry, the CRISPY workflow, memory files, the
 no-go list, and tool usage. Read it directly for the rules; depth lives in
 `core/docs/`, which agents load on demand.

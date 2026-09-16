@@ -38,14 +38,15 @@ Go to implementation only after the plan is approved. Trivial one-sentence diffs
    - [ ] Docs updated if behavior changed
    - [ ] No unintended changes in diff
    - [ ] Fresh-context review clean
-5. Get approval - show draft, get OK, then commit
-6. Close the memory loop - update `.ai/session.md` and append decisions to `.ai/assumptions.md` (see the `context` skill).
+5. Prose scan - check any human-facing prose in the change (README, docs, code comments, commit messages) against `core/docs/ai-writing.md`; fix the tells.
+6. Get approval - show draft, get OK, then commit
+7. Close the memory loop - update `.ai/session.md` and append decisions to `.ai/assumptions.md` (see the `context` skill).
 
 ## Commit rules
 - Never `git add -A` - stage explicit file paths only
 - Write descriptive commit messages (what and why)
 - Never commit with failing tests or lint warnings
-- Never force-push to shared branches
+- Branch, push, and history rules - including the one exception to rewriting history: `core/docs/git-workflow.md`
 
 ## Exception policy
 - Complexity exceptions: documented with a justification in the commit

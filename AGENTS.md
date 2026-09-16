@@ -29,26 +29,22 @@
 8. Commit only after human approval.
 
 ## Section 2: Workflow (CRISPY)
+Full procedure and step order: `~/.config/agent-config/core/docs/development-workflow.md`.
 ### Analysis
 1. Read the project's `docs/repository-map.md` for structure; if absent, use `~/.config/agent-config/core/docs/repository-map.md`.
 2. Load `~/.config/agent-config/core/principles.md` for behavior rules.
-3. Plan before code for multi-file or uncertain work: numbered implementation plan with explicit success criteria, approved before implementation. Skip the written plan when the change fits a one-sentence diff. Full procedure: `~/.config/agent-config/core/docs/development-workflow.md`.
-4. Document assumptions in `.ai/assumptions.md`.
+3. Plan before code for multi-file or uncertain work: numbered plan with explicit success criteria, with the assumptions recorded in `.ai/assumptions.md`. Skip the written plan when the change fits a one-sentence diff.
+   Gate: the plan is approved before implementation starts.
 ### Implementation
-1. Surgical changes only - every diff line traces to the request.
+1. Surgical changes only - every diff line traces to the request. Minimum scope, not minimum quality: handle errors and edge cases. One task at a time.
 2. Test-first: write failing test -> implement -> verify pass -> refactor.
-3. Complete code: every function handles errors, logs operations, covers edge cases. Minimum viable means minimum scope, not minimum quality.
-4. Complexity budgets: `~/.config/agent-config/core/docs/complexity.md` is the single source. Do not increase total repository complexity without justification.
-5. One task at a time. Finish, confirm, next.
-6. Time-box: 3 tries or 5 minutes for simple issues. For complex bugs, investigate deeper - don't patch blindly.
-7. Run linters after edits. Fix all warnings. Run tests. All must pass.
+3. Stay inside the complexity budgets, single-sourced at `~/.config/agent-config/core/docs/complexity.md`.
+   Gate: linters clean and all tests passing before review.
 ### Review
-1. Self-review the diff for unintended changes.
-2. Fresh-context review: delegate the diff to a subagent (or second session) that does not share this conversation; fix its findings before declaring done.
-3. Run the validation checklist - `~/.config/agent-config/core/docs/validation-checklist.md` (a project `docs/validation-checklist.md` overrides it).
-4. Working code is a first draft. After tests go green, do one ruthless edit of your own diff - remove dead code, abstractions, debug artifacts, and noise comments.
-5. Scan any human-facing prose written in this change (README, docs, code comments, commit messages) against `~/.config/agent-config/core/docs/ai-writing.md`; fix the tells.
-6. Never `git add -A`. Stage explicit files only.
+1. Self-review the diff, then one ruthless edit of your own draft - remove dead code, abstractions, debug artifacts, and noise comments.
+2. Fresh-context review: delegate the diff to a subagent (or second session) that does not share this conversation; fix its valid findings before declaring done.
+3. Run the validation checklist - `~/.config/agent-config/core/docs/validation-checklist.md` (a project `docs/validation-checklist.md` overrides it) - and scan any human-facing prose in the change against `~/.config/agent-config/core/docs/ai-writing.md`.
+   Gate: human approval before the commit. Stage explicit files only; never `git add -A`.
 
 ## Section 3: Reference docs - shared, read on demand
 Read on demand; never copy them into projects. Paths below are relative to `~/.config/agent-config/`.
