@@ -20,7 +20,7 @@ When using `golangci-lint`, turn on these analyzers to enforce the repository's 
 - `dupl` - code duplication detection
 - `staticcheck`, `govet`, `errcheck`, `unused` - general correctness and hygiene
 
-Set the `nestif` threshold for the project. Note that it scores nested `if` complexity instead of enforcing an exact maximum nesting depth.
+`nestif` scores nested `if` complexity rather than enforcing an exact nesting depth, so it complements the depth budget above instead of replacing it.
 
 ## Practices
 
