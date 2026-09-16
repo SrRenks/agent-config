@@ -13,7 +13,7 @@
 4. Never fabricate. If you don't know, say so. Don't guess and sound certain.
 5. Stop when confused. Ask. Don't barrel ahead with wrong assumptions.
 6. Touch only what's requested. No drive-by refactoring. No cleanups outside scope.
-7. Formatting by audience: agent-facing files (this config, `.ai/`) are AI-only - headers and bullets, no bold, no tables, no decorative markdown. Committed project docs (`README.md`, `docs/`) are written for humans - full markdown.
+7. Formatting by audience: agent-facing files (this config, `.ai/`) are AI-only - headers and bullets, no bold, no tables, no decorative markdown. Committed project docs (`README.md`, `docs/`) are written for humans - full markdown, and the skeletons under `core/templates/` mirror that human format, tables and bold included.
 8. AI-writing hygiene applies only to prose written into files for humans (README, docs, code comments, commit messages): follow `~/.config/agent-config/core/docs/ai-writing.md`. Chat replies and `.ai/` files are exempt.
 
 ## Section 1: Project entry
@@ -80,6 +80,7 @@ Read on demand; never copy them into projects. Paths below are relative to `~/.c
 - `.ai/scratchpad.md` - working notes
 - `.ai/docs/` - project-specific convention docs
 - `.ai/context/` - project knowledge base (domain, architecture, database, dependencies, conventions)
+- `.ai/evals/` - retained eval runs, optional (see `~/.config/agent-config/core/docs/evals.md`)
 - Never commit `.ai/`; it is per-project knowledge, not project content.
 
 ## Section 5: No-Go
