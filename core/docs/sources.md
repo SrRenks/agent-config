@@ -13,10 +13,13 @@ Policy: a new behavioral rule or numeric threshold ships with its entry here, in
 - Anthropic, Claude's Character (anti-sycophancy, honesty, stopping when confused): https://www.anthropic.com/research/claude-character (retrieved 2026-09-15). Used in: AGENTS.md section 0 items 1 to 5.
 - Sharma et al. (Anthropic), Towards Understanding Sycophancy in Language Models, arXiv:2310.13548: https://arxiv.org/abs/2310.13548 (retrieved 2026-09-15). Used in: the no-flattery rule.
 - Anthropic engineering, Effective context engineering for AI agents (context rot, smallest set of high-signal tokens): https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents (retrieved 2026-09-15). Used in: lean injection policy, preset comments, README.
-- Chroma, Context Rot (performance degrades as input grows, before the window is full): https://research.trychroma.com/context-rot (retrieved 2026-09-15). Used in: the lean-injection stance behind the preset patch, core/docs/evals.md cost reasoning.
+- Chroma, Context Rot (performance degrades as input grows, before the window is full): https://www.trychroma.com/research/context-rot (retrieved 2026-09-15). Used in: the lean-injection stance behind the preset patch, core/docs/evals.md cost reasoning.
 - HumanLayer, Evolving AI Coding Agent Workflows from Research-Plan-Implement to CRISPY, ZenML LLMOps Database: https://www.zenml.io/llmops-database/evolving-ai-coding-agent-workflows-from-research-plan-implement-to-crispy (retrieved 2026-09-15). Used in: the CRISPY name and the phase structure in AGENTS.md section 2, and the argument that always-on prompt budget is scarce.
 - Anthropic, prompt caching docs: https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching (retrieved 2026-09-15). Used in: CLAUDE.md prompt-caching-friendly structure.
 - Anthropic, Claude Code skills (the tool-search pattern that skill_search and skill_load mirror): https://docs.anthropic.com/en/docs/claude-code/skills (retrieved 2026-09-15). Used in: skill-search.mjs, skills/ layout.
+- Anthropic, Building Effective Agents (Schluntz and Zhang), the canonical text on workflow versus agent and on keeping the architecture simple: https://www.anthropic.com/engineering/building-effective-agents (retrieved 2026-09-15). Used in: the preset philosophy, the skills-as-procedures design, and the decision not to mount a skill catalog.
+- Liu et al., Lost in the Middle: How Language Models Use Long Contexts, TACL (2024): https://aclanthology.org/2024.tacl-1.9/ (retrieved 2026-09-15). Used in: front-loading the hard rules in AGENTS.md and the ordering rules in core/docs/ai-writing.md.
+- Manus, Context Engineering for Production AI Agents at Scale, ZenML LLMOps Database: https://www.zenml.io/llmops-database/context-engineering-for-production-ai-agents-at-scale (retrieved 2026-09-15). Used in: .ai/ as memory in files, on-demand skill loading, and the compaction policy in the dsh preset.
 - ETH Zurich, arXiv:2602.11988 (instruction bloat raises inference cost roughly 20 to 23 percent): https://arxiv.org/abs/2602.11988 (retrieved 2026-09-15). Used in: preset patch, README design notes.
 
 ## Complexity, design, and maintainability
@@ -35,6 +38,8 @@ Policy: a new behavioral rule or numeric threshold ships with its entry here, in
 - D. Knuth, Structured Programming with go to Statements, ACM Computing Surveys 6(4) (1974), the origin of measuring before optimizing: https://doi.org/10.1145/356635.356640 (retrieved 2026-09-15). Used in: the optimization rule in core/docs/performance.md.
 
 ## Process, operations, and debugging
+- Geoffrey Huntley, Ralph (spec-driven loops with state in files rather than long conversations): https://ghuntley.com/ralph/ (retrieved 2026-09-15). Used in: the plan skill and the spec-first flow; the harness ralph tool follows this technique.
+- GitHub, Spec Kit (specification before code, with templates and gates): https://github.com/github/spec-kit (retrieved 2026-09-15). Used in: the plan skill and the approval gate in AGENTS.md section 2.
 - Google, Site Reliability Engineering, Postmortem Culture: https://sre.google/sre-book/postmortem-culture/ (retrieved 2026-09-15). Used in: the post-mortem section of core/docs/debugging.md and the review rules in AGENTS.md section 2.
 
 ## Testing
@@ -48,6 +53,10 @@ Policy: a new behavioral rule or numeric threshold ships with its entry here, in
 - OWASP, Top 10: https://owasp.org/www-project-top-ten/ (retrieved 2026-09-15). Used in: the risk list in core/docs/security.md.
 - The Twelve-Factor App, factor III Config: https://12factor.net/config (retrieved 2026-09-15). Used in: secrets kept out of code and out of the repository, core/docs/security.md.
 - OWASP, Dependency-Check: https://owasp.org/www-project-dependency-check/ (retrieved 2026-09-15). Used in: dependency scanning in the ci skill and core/docs/dependency-policy.md.
+
+## Agent security
+- Simon Willison, The Lethal Trifecta (private data plus untrusted content plus the ability to exfiltrate, in one agent): https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/ (retrieved 2026-09-15). Used in: the reason claudeignore, the permission lists, and the block-danger hook exist.
+- OWASP, Top 10 for LLM Applications, incident-weighted edition: https://genai.owasp.org/llm-top-10/ (retrieved 2026-09-15). Used in: the agent-side counterpart to core/docs/security.md; excessive agency is the risk the permission lists answer.
 
 ## Dependencies
 - OpenSSF, Scorecard: https://github.com/ossf/scorecard (retrieved 2026-09-15). Used in: the health signals weighed before adopting a dependency, core/docs/dependency-policy.md.
@@ -64,15 +73,29 @@ Policy: a new behavioral rule or numeric threshold ships with its entry here, in
 - Diataxis (Daniele Procida): https://diataxis.fr/ (retrieved 2026-09-15). Used in: the tutorial, how-to, reference, and explanation categories in core/docs/project-docs.md.
 - Write the Docs, Docs as Code: https://www.writethedocs.org/guide/docs-as-code/ (retrieved 2026-09-15). Used in: the docs-as-code principle in core/docs/project-docs.md.
 
+## Skill format and distribution
+- Agent Skills standard, the specification behind skills/<name>/SKILL.md: https://agentskills.io and https://github.com/anthropics/skills/blob/main/spec/agent-skills-spec.md (retrieved 2026-09-15). Used in: the skills/ layout and the frontmatter fields in core/docs/agent-config-authoring.md.
+- Anthropic, skill-creator (how to write and improve a skill, including optimizing its description for triggering accuracy): https://github.com/anthropics/skills/tree/main/skills/skill-creator (retrieved 2026-09-15). Used in: the decision to keep the triggers in the single description field.
+- Jesse Vincent, superpowers (MIT; one plugin manifest per harness, flat promoted-only skills directory): https://github.com/obra/superpowers (retrieved 2026-09-15). Used in: the reference architecture for multi-harness distribution, if this config ever ships as a plugin.
+- skills.sh, the cross-harness skill installer: https://skills.sh (retrieved 2026-09-15). Used in: the evaluation of distribution options; not adopted, the symlink model covers the five tools.
+
+## Measurement and evidence
+- METR, Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity (randomized trial: experienced developers were slower with AI while believing they were faster): https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/ (retrieved 2026-09-15). Used in: core/docs/evals.md, the case for measuring instead of trusting the impression.
+- DORA, Balancing AI tensions: from AI adoption to effective SDLC use (AI as an amplifier of existing practice, with low reported trust): https://dora.dev/insights/balancing-ai-tensions/ (retrieved 2026-09-15). Used in: the argument that shared config and process matter more than the model.
+
 ## Practitioner sources (stance and corroboration)
 Writing by people who ship code with agents. These inform the posture of the config (review standards, discipline in tooling, memory as files) rather than backing a specific rule or number.
 - Fabio Akita (akitaonrails), RANT: Did Akita Bend Over for AI? (2026): https://akitaonrails.com/en/2026/02/24/rant-akita-caved-to-ai/ (retrieved 2026-09-15). Stance the review rules follow: AI-assisted work carries the same standard as any other code.
 - Fabio Akita, ai-memory: https://github.com/akitaonrails/ai-memory (retrieved 2026-09-15). Independent build of the same idea behind .ai/: agent memory as git-versioned markdown, with writes gated by evaluation.
 - Robert C. Martin and Justin Martin, Clean AI: Agentic Discipline (2026): https://cleancoders.com/episode/agentic-discipline-6 (retrieved 2026-09-15). Corroborates the guardrails principle: discipline an agent cannot be trusted to remember belongs in the tooling.
+- Armin Ronacher, Agentic Coding Recommendations: https://lucumr.pocoo.org/2025/6/12/agentic-coding/ (retrieved 2026-09-15). Corroborates the lean injection stance and the tool-usage rules in AGENTS.md section 6.
 - Matt Pocock, skills: https://github.com/mattpocock/skills (retrieved 2026-09-15). Reference implementation for a skills directory and its frontmatter.
 - Simon Willison, weblog: https://simonwillison.net/ (retrieved 2026-09-15). Public record of what agent tooling does in practice, failure modes included.
 - Martin Fowler, Exploring Generative AI: https://martinfowler.com/articles/exploring-gen-ai.html (retrieved 2026-09-15). Corroborates the review phase and the fresh-context idea.
 - Kent Beck, Augmented Coding (Honeycomb episode 80): https://www.honeycomb.io/resources/podcasts/ep-80-augmented-coding-with-kent-beck (retrieved 2026-09-15). Corroborates test-first and small steps under AI assistance.
+
+## AI usability
+- Jakob Nielsen (UX Tigers), Intent by Discovery: Designing the AI User Experience, and A New AI: Creation as Exploration and Discovery: https://www.uxtigers.com/post/intent-ux (retrieved 2026-09-15). Used in: the ask-before-acting rules (AGENTS.md section 0 item 5, the plan skill) and how .ai/project.md is written to be read by a human and an agent.
 
 ## Internal, measured
 - Retained eval set (anchor checks plus task set): core/docs/evals.md. Anchor evidence: liangshen issue 6, 0/9 first-request anchoring with the skill catalog injected versus about 81 percent without. Used in: preset design decisions.
@@ -90,7 +113,7 @@ Decisions made here, with no external source. They are open to revision when evi
 - Skill triggers live in `description`, the only skill frontmatter field both harnesses read (Anthropic Claude Code skills; the dsh skill index). The separate `whenToUse` field was dropped as redundant, and the dsh search tolerates its absence.
 
 ## Community practice, uncited
-- AGENTS.md / CLAUDE.md / cursorrules layering and project-root placement: 2026 consensus guides and widely used repos such as steipete/agent-rules. Standard practice; no single canonical paper.
+- AGENTS.md / CLAUDE.md / cursorrules layering and project-root placement: 2026 consensus guides and widely used repos such as steipete/agent-rules (https://github.com/steipete/agent-rules, retrieved 2026-09-15). Standard practice; no single canonical paper.
 - Dual frontmatter (description plus globs for Cursor; paths for Claude Code): the two vendors' own documentation.
 - Language-specific rules and docs (go, python, rust, kotlin): distilled from those languages' official style guides and common practice.
 - One assertion per test when practical (core/docs/testing.md).

@@ -388,14 +388,18 @@ people below are the ones it leans on most.
 - Google, for the developer style guide, the engineering practices on code
   review, and the SRE postmortem culture.
 - Simon Willison, for documenting in public what agent tooling does in practice,
-  failure modes included.
+  failure modes included, and for naming the lethal trifecta behind the guardrails.
+- Jesse Vincent, whose superpowers project is the working reference for shipping
+  one skill set to several harnesses at once.
 
 Papers, standards, and studies behind the rest of the rules are listed in
-`core/docs/sources.md`: among them the Wikipedia WikiProject AI Cleanup essay on
-the signs of AI writing, the ETH Zurich study on instruction bloat and inference
-cost, Diataxis, Keep a Changelog, Conventional Commits, the OWASP standards, and
-the work of Parnas, Yourdon and Constantine, Feathers, Nygard, Knuth, and Chroma.
-If a rule here misstates its source, or a source is missing, the fix belongs in
-that file.
+`core/docs/sources.md`: among them the Agent Skills standard that this repo's
+`SKILL.md` format follows, the Wikipedia WikiProject AI Cleanup essay on the signs
+of AI writing, the ETH Zurich study on instruction bloat and inference cost, the
+METR trial on measured developer productivity, the DORA report on AI as an
+amplifier, OWASP's application and LLM top tens, Jakob Nielsen on AI usability,
+Diataxis, Keep a Changelog, Conventional Commits, and the work of Parnas, Yourdon
+and Constantine, Feathers, Nygard, Knuth, and Chroma. If a rule here misstates
+its source, or a source is missing, the fix belongs in that file.
 
 Thank you all. Long live knowledge and open source. =)
