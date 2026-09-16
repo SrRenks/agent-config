@@ -125,10 +125,11 @@ adapters, the reference library, and the templates.
 ## How one config reaches every tool
 
 - `skills/` is symlinked to both `~/.claude/skills` and `~/.dsh/skills`. Every
-  skill carries combined frontmatter (`name`, `description`, `whenToUse`); dsh
-  uses `whenToUse` for its skill search, and both tools read the same directory
-  plus SKILL.md layout. The Claude slash commands in
-  `agents/claude-code/commands/` are symlinks into this directory.
+  skill carries `name` and `description` frontmatter following the Agent Skills
+  standard, and the trigger phrasing lives in the description because that is the
+  field both tools pick a skill from. Both read the same directory plus SKILL.md
+  layout. The Claude slash commands in `agents/claude-code/commands/` are
+  symlinks into this directory.
 - Files in `agents/claude-code/rules/` carry `description` with `globs` for
   Cursor and `paths` for Claude Code, so one file serves both.
 - `ai-init` links `./AGENTS.md` into each project, which is the path Codex,
@@ -321,8 +322,8 @@ find . -type l ! -exec test -e {} \; -print                                     
 Each check needs its own loop: `bash -n` and `node --check` only inspect the
 first file they are given.
 
-Skill frontmatter needs `name`, `description`, and `whenToUse`, with `name`
-matching the directory. Rule frontmatter needs `description`, `globs`, and
+Skill frontmatter needs `name` and `description`, with `name` matching the
+directory. Rule frontmatter needs `description`, `globs`, and
 `paths`. The dsh patch flow keeps
 `agents/dsh/presets/renks/stock-baseline.agent.cordis.yml` plus
 `agent.cordis.patch` byte-identical to `fallback.agent.cordis.yml`; see

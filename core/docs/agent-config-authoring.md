@@ -26,8 +26,7 @@ description and globs serve Cursor; paths serves Claude Code. Keep both keys whe
 Skills, skills/<name>/SKILL.md:
 ---
 name: kebab-case, equal to the directory name
-description: One sentence: what the skill does and when to use it.
-whenToUse: When the user ... (trigger phrases)
+description: What the skill does plus when to use it, trigger phrasing included. Both Claude Code and dsh pick a skill from this field, so the triggers live here and nowhere else.
 ---
 - Body: numbered imperative steps; state the deliverables; end with a stop condition (wait for approval or report).
 - Never duplicate a procedure that already exists; extend the existing skill instead.
@@ -58,7 +57,7 @@ Templates:
 - Scripts: bash -n <file>.
 - Preset YAML: node -e "require('yaml').parse(...)" run from ~/.dsh/profiles; the !!js tag warnings are expected.
 - Patch integrity: apply agent.cordis.patch to stock-baseline.agent.cordis.yml and diff against fallback.agent.cordis.yml; must be byte-exact.
-- Skill frontmatter: name, description, whenToUse present; name equals the directory.
+- Skill frontmatter: name and description present; name equals the directory.
 - Rule frontmatter: description, globs, paths present.
 - Symlinks: find . -type l ! -exec test -e {} \; -print must return nothing.
 - Human-facing prose: scan against core/docs/ai-writing.md and fix the tells.

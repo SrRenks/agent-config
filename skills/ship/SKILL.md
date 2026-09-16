@@ -1,7 +1,6 @@
 ---
 name: ship
-description: Prepare a commit: verify the staged diff, generate a conventional commit message, run pre-commit checks (including a fresh-context review), commit, and report the hash.
-whenToUse: When the user asks to commit or ship changes.
+description: Prepare a commit: verify the staged diff, generate a conventional commit message, run pre-commit checks (including a fresh-context review), commit, and report the hash. Use when the user asks to commit or ship changes.
 ---
 Prepare a commit:
 1. git diff --staged (or git diff if nothing staged) - verify what is changing

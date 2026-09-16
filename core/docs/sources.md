@@ -87,6 +87,7 @@ Decisions made here, with no external source. They are open to revision when evi
 - A docs subdirectory appears once three files of the same type accumulate.
 - Tool catalog injection is replaced by search and load, per the measurement above.
 - Never git add -A; stage explicit files. Stated in AGENTS.md section 2 and enforced by the Claude Code hook.
+- Skill triggers live in `description`, the only skill frontmatter field both harnesses read (Anthropic Claude Code skills; the dsh skill index). The separate `whenToUse` field was dropped as redundant, and the dsh search tolerates its absence.
 
 ## Community practice, uncited
 - AGENTS.md / CLAUDE.md / cursorrules layering and project-root placement: 2026 consensus guides and widely used repos such as steipete/agent-rules. Standard practice; no single canonical paper.
