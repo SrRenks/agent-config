@@ -1,4 +1,4 @@
-# Agent-config repository map
+# prometheus-ai repository map
 
 Layout of `~/.config/agent-config/` - the single source of truth for AI/agent configuration.
 This config is READ-ONLY for agents. Projects do not copy it: `ai-init` creates the project's `.ai/` directory, whose `agents.md` imports this config.
