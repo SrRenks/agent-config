@@ -49,6 +49,14 @@ files that are not there. `setup.sh` warns when it runs from another path, and
 `ai-init` / `ai-context` accept `AGENT_CONFIG_DIR` if you relocate the config on
 purpose.
 
+The bridges should resolve back into the clone:
+
+```bash
+for b in ~/.claude/CLAUDE.md ~/.codex/AGENTS.md ~/.gemini/GEMINI.md ~/.cursor/rules ~/.agents/AGENTS.md ~/.local/bin/ai-init; do
+  [ -L "$b" ] && echo "ok       $b -> $(readlink "$b")" || echo "MISSING  $b"
+done
+```
+
 ## The `.ai/` directory
 
 Every project gets its own `.ai/`: the agent's working memory for that project,
@@ -124,6 +132,7 @@ agents/
   gemini/              GEMINI.md
   dsh/                 install.sh and presets/renks/
 skills/                one procedure per directory, each a SKILL.md
+.gitignore             keeps backups/, evals/, and a stray gitconfig out of git
 README.md, LICENSE     this file and the license
 ```
 
@@ -312,7 +321,9 @@ Identity is per machine, never tracked:
 - `~/.config/git/identity` holds your `user.name` and `user.email`, mode 600.
 - `~/.gitconfig` includes it conditionally for `~/Projects/**` and `~/.config/**`,
   so personal and work directories can resolve differently.
-- `setup.sh` creates the file from your existing global config if it is missing.
+- `setup.sh` creates the file from your existing global config if it is missing,
+  and falls back to `YOUR NAME` / `you@example.com` on a machine that has none,
+  which you edit before the first commit.
 
 Auth stays at the SSH level and out of git config. `core/docs/git-workflow.md`
 covers the resolution order.
