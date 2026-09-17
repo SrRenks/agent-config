@@ -1,6 +1,6 @@
 ---
 name: debug
-description: Find and fix a bug systematically: reproduce it, isolate the failing path, verify assumptions, fix the root cause, and keep a regression test. Use when something is broken and the cause is not obvious, when an earlier fix did not hold, or when the user reports a bug with no known cause.
+description: 'Find and fix a bug systematically: reproduce it, isolate the failing path, verify assumptions, fix the root cause, and keep a regression test. Use when something is broken and the cause is not obvious, when an earlier fix did not hold, or when the user reports a bug with no known cause.'
 ---
 Work the bug down instead of guessing at it. Rules and tactics: `~/.config/agent-config/core/docs/debugging.md`.
 

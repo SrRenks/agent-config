@@ -1,6 +1,6 @@
 ---
 name: onboard
-description: Understand a repository like a new engineer: classify NEW vs EXISTING, survey docs and history, summarize, ask questions, and change nothing. Use when starting work in an unfamiliar repository or when the user asks to be onboarded.
+description: 'Understand a repository like a new engineer: classify NEW vs EXISTING, survey docs and history, summarize, ask questions, and change nothing. Use when starting work in an unfamiliar repository or when the user asks to be onboarded.'
 ---
 You have just joined this project as a new engineer. Your task is to understand it, not change it. Do NOT edit, create, or delete any files during onboarding.
 

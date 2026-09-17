@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review all pending changes on the current branch: diff, unpushed commits, linters, tests, a fresh-context adversarial pass, and a structured report. Use when the user asks to review pending changes or before declaring work done.
+description: 'Review all pending changes on the current branch: diff, unpushed commits, linters, tests, a fresh-context adversarial pass, and a structured report. Use when the user asks to review pending changes or before declaring work done.'
 ---
 Review all pending changes on the current branch:
 1. git diff - show the full diff

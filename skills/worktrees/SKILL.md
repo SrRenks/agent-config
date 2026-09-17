@@ -1,6 +1,6 @@
 ---
 name: worktrees
-description: Do work in a git worktree so the main checkout stays untouched: create the worktree, work and verify inside it, land the branch, then clean up. Use when work must run alongside something else in the same repository, when the main checkout holds uncommitted changes, or when the user asks for an isolated workspace.
+description: 'Do work in a git worktree so the main checkout stays untouched: create the worktree, work and verify inside it, land the branch, then clean up. Use when work must run alongside something else in the same repository, when the main checkout holds uncommitted changes, or when the user asks for an isolated workspace.'
 ---
 Keep the main checkout stable and do the work somewhere else.
 

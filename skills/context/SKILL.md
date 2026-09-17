@@ -1,6 +1,6 @@
 ---
 name: context
-description: File project knowledge the user shares conversationally into the correct .ai/ files - purpose, rules, database, dependencies, conventions, decisions - and close the memory loop at the end of tasks and sessions. Use when the user shares project context, decisions, or conventions, or when finishing a task in an initialized project.
+description: 'File project knowledge the user shares conversationally into the correct .ai/ files - purpose, rules, database, dependencies, conventions, decisions - and close the memory loop at the end of tasks and sessions. Use when the user shares project context, decisions, or conventions, or when finishing a task in an initialized project.'
 ---
 Act as the project's knowledge manager. File what the user tells you into the correct local markdown files:
 - Purpose / business rules / glossary -> .ai/context/domain.md

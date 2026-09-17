@@ -1,6 +1,6 @@
 ---
 name: ci
-description: Run the full CI pipeline locally: lint, test, build, security scan, and report pass/fail per step. Use when the user asks to run CI locally or to verify the build before pushing.
+description: 'Run the full CI pipeline locally: lint, test, build, security scan, and report pass/fail per step. Use when the user asks to run CI locally or to verify the build before pushing.'
 ---
 Run the full CI pipeline locally:
 1. make lint (or equivalent)

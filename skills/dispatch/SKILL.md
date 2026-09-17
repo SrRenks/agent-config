@@ -1,6 +1,6 @@
 ---
 name: dispatch
-description: Split independent work across parallel subagents and merge their results: one deliverable per task, launched together, each result verified before it is used. Use when a task has independent parts, when several areas need the same kind of review, or when exploring options in parallel saves time.
+description: 'Split independent work across parallel subagents and merge their results: one deliverable per task, launched together, each result verified before it is used. Use when a task has independent parts, when several areas need the same kind of review, or when exploring options in parallel saves time.'
 ---
 Parallelism is for independent work only.
 

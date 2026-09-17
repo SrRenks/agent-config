@@ -1,6 +1,6 @@
 ---
 name: extend-config
-description: Create or update files in the agent-config repo (rules, skills, docs, templates, presets, bridges) following its authoring spec. Use when the user asks to add, extend, or reorganize the agent-config repo, or to create new agent config files following the existing patterns.
+description: 'Create or update files in the agent-config repo (rules, skills, docs, templates, presets, bridges) following its authoring spec. Use when the user asks to add, extend, or reorganize the agent-config repo, or to create new agent config files following the existing patterns.'
 ---
 1. Read ~/.config/agent-config/core/docs/agent-config-authoring.md and follow it exactly.
 2. Classify the requested change; read the closest existing file of that type and copy its structure.

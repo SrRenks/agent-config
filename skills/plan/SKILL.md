@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Survey the repository and produce a numbered implementation plan with explicit success criteria before any code changes, then stop and wait for approval. Use when the user asks to plan, or before starting any non-trivial implementation.
+description: 'Survey the repository and produce a numbered implementation plan with explicit success criteria before any code changes, then stop and wait for approval. Use when the user asks to plan, or before starting any non-trivial implementation.'
 ---
 Analyze the repository and produce a concise implementation plan. Do NOT edit any files yet.
 
