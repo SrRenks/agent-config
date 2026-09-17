@@ -3,7 +3,10 @@
 # Auto-lints modified files and reports errors
 
 INPUT=$(cat)
-TOOL=$(echo "$INPUT" | jq -r '.tool_name // ""')
+# Normalized to lowercase: the matcher in settings.json passes the real tool name
+# ("Write", "Edit"), and comparing it verbatim against hardcoded case silently
+# disabled this hook.
+TOOL=$(echo "$INPUT" | jq -r '.tool_name // ""' | tr '[:upper:]' '[:lower:]')
 
 # Only run after file writes
 if [ "$TOOL" != "write" ] && [ "$TOOL" != "edit" ]; then
