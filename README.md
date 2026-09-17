@@ -190,6 +190,14 @@ upgrade:
 git pull && bash agents/dsh/install.sh
 ```
 
+A dsh upgrade installs into a new pnpm directory and prunes the old one, which
+leaves the links an earlier version wrote into `~/.dsh/profiles/node_modules`
+pointing at nothing. They are inert, and removing them is safe:
+
+```bash
+find ~/.dsh/profiles/node_modules -type l ! -exec test -e {} \; -print
+```
+
 On-demand search stays the default as the skill list grows. Injecting the catalog
 only pays off while there are a handful of skills, so it should not come back
 past roughly three to five.
