@@ -101,6 +101,7 @@ Writing by people who ship code with agents. These inform the posture of the con
 - Retained eval set (anchor checks plus task set): core/docs/evals.md. Anchor evidence: liangshen issue 6, 0/9 first-request anchoring with the skill catalog injected versus about 81 percent without. Used in: preset design decisions.
 - The 2026-09 config review that drove the two preset swaps: summarized in the preset patch comments and core/docs/evals.md.
 - Skill delivery scale policy: search and load stays the default while the catalog is small, and catalog injection is not reintroduced past roughly three to five skills. Basis: the anchor measurement above plus the instruction-budget entry.
+- Standing instruction injection, measured 2026-09-16 with tiktoken on o200k_base and cl100k_base: AGENTS.md reads 2283 and 2292 tokens, and with the Claude Code layer (agents/claude-code/CLAUDE.md) the first request carries 2460 and 2470. Used in: the injection-budget anchor check in core/docs/evals.md.
 
 ## Repo design decisions
 Decisions made here, with no external source. They are open to revision when evidence appears.
@@ -112,6 +113,7 @@ Decisions made here, with no external source. They are open to revision when evi
 - Never git add -A; stage explicit files. Stated in AGENTS.md section 2 and enforced by the Claude Code hook.
 - Skill triggers live in `description`, the only skill frontmatter field both harnesses read (Anthropic Claude Code skills; the dsh skill index). The separate `whenToUse` field was dropped as redundant, and the dsh search tolerates its absence.
 - Skill and preset descriptions are single-quoted in frontmatter when they contain a colon. An unquoted colon followed by a space ends the scalar, the YAML fails to parse, and the loader drops the skill with no error: seven of ten skills were invisible this way until 2026-09-16.
+- The ~2.5K token ceiling for standing instructions (core/docs/evals.md, anchor check A): repo design, sized from the lean-injection sources above rather than from a published number. The measurement above sits at 2460, so it is a ceiling with roughly 40 tokens of slack: adding to AGENTS.md means removing something first.
 
 ## Community practice, uncited
 - AGENTS.md / CLAUDE.md / cursorrules layering and project-root placement: 2026 consensus guides and widely used repos such as steipete/agent-rules (https://github.com/steipete/agent-rules, retrieved 2026-09-15). Standard practice; no single canonical paper.

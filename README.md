@@ -328,10 +328,14 @@ Run before finishing any change to this config:
 for f in setup.sh ai-init ai-context agents/dsh/install.sh; do bash -n "$f"; done  # shell syntax
 for f in agents/dsh/presets/renks/*.mjs; do node --check "$f"; done                # plugin syntax
 find . -type l ! -exec test -e {} \; -print                                        # broken symlinks
+python3 -c "import tiktoken,pathlib; e=tiktoken.get_encoding('o200k_base'); print(sum(len(e.encode(pathlib.Path(p).read_text())) for p in ('AGENTS.md','agents/claude-code/CLAUDE.md')))"  # injection budget
 ```
 
 Each check needs its own loop: `bash -n` and `node --check` only inspect the
-first file they are given.
+first file they are given. The last check needs `tiktoken` (`pip install
+tiktoken`), which is not a repo dependency. It measures what a first request
+carries: 2460 tokens on 2026-09-16 against the ~2.5K ceiling, so roughly 40
+tokens of slack (`core/docs/evals.md`).
 
 Skill frontmatter needs `name` and `description`, with `name` matching the
 directory. Rule frontmatter needs `description`, `globs`, and
