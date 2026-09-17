@@ -111,6 +111,7 @@ Decisions made here, with no external source. They are open to revision when evi
 - Tool catalog injection is replaced by search and load, per the measurement above.
 - Never git add -A; stage explicit files. Stated in AGENTS.md section 2 and enforced by the Claude Code hook.
 - Skill triggers live in `description`, the only skill frontmatter field both harnesses read (Anthropic Claude Code skills; the dsh skill index). The separate `whenToUse` field was dropped as redundant, and the dsh search tolerates its absence.
+- Skill and preset descriptions are single-quoted in frontmatter when they contain a colon. An unquoted colon followed by a space ends the scalar, the YAML fails to parse, and the loader drops the skill with no error: seven of ten skills were invisible this way until 2026-09-16.
 
 ## Community practice, uncited
 - AGENTS.md / CLAUDE.md / cursorrules layering and project-root placement: 2026 consensus guides and widely used repos such as steipete/agent-rules (https://github.com/steipete/agent-rules, retrieved 2026-09-15). Standard practice; no single canonical paper.

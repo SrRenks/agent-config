@@ -329,7 +329,9 @@ first file they are given.
 
 Skill frontmatter needs `name` and `description`, with `name` matching the
 directory. Rule frontmatter needs `description`, `globs`, and
-`paths`. The dsh patch flow keeps
+`paths`. Both blocks must parse as YAML: a colon inside an unquoted value ends
+the scalar and the loader drops the file without an error, so quote any value
+that contains one. The dsh patch flow keeps
 `agents/dsh/presets/renks/stock-baseline.agent.cordis.yml` plus
 `agent.cordis.patch` byte-identical to `fallback.agent.cordis.yml`; see
 `agents/dsh/presets/renks/README.md`.

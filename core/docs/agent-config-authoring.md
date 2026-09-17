@@ -1,4 +1,4 @@
-# Agent-config authoring spec (v2026-09-07)
+# prometheus-ai authoring spec (v2026-09-07)
 
 Purpose: how to create or extend files in this repo when the human explicitly orders it. The config is READ-ONLY otherwise (AGENTS.md, Scope section). Load this spec, then follow it exactly.
 
@@ -31,6 +31,7 @@ description: What the skill does plus when to use it, trigger phrasing included.
 - Body: numbered imperative steps; state the deliverables; end with a stop condition (wait for approval or report).
 - Never duplicate a procedure that already exists; extend the existing skill instead.
 - Keep bodies lean. A loaded skill occupies context, so every line must pay rent.
+- Frontmatter is YAML and must parse. A colon followed by a space inside an unquoted value ends the scalar and breaks the file, so single-quote the `description` when it contains one. A block that fails to parse makes the skill disappear from `skill_search` with no error anywhere.
 
 Reference docs, core/docs/*.md:
 - Agent-facing format: headers and bullets only; no bold, no tables, no em dashes, no decorative markdown (AGENTS.md rule 16).
@@ -57,8 +58,9 @@ Templates:
 - Scripts: bash -n <file>.
 - Preset YAML: node -e "require('yaml').parse(...)" run from ~/.dsh/profiles; the !!js tag warnings are expected.
 - Patch integrity: apply agent.cordis.patch to stock-baseline.agent.cordis.yml and diff against fallback.agent.cordis.yml; must be byte-exact.
-- Skill frontmatter: name and description present; name equals the directory.
-- Rule frontmatter: description, globs, paths present.
+- Skill frontmatter: name and description present; name equals the directory; the block parses as YAML.
+- Rule frontmatter: description, globs, paths present; the block parses as YAML.
+- Frontmatter sweep: python3 -c "import yaml,pathlib; [yaml.safe_load(p.read_text()[3:p.read_text().find('\n---',3)]) for p in pathlib.Path('.').rglob('*.md') if p.read_text().startswith('---')]" returns without raising.
 - Symlinks: find . -type l ! -exec test -e {} \; -print must return nothing.
 - Human-facing prose: scan against core/docs/ai-writing.md and fix the tells.
 - Provenance: every numeric threshold in the changed files has an entry in core/docs/sources.md; check with grep -rnE '[<>≤≥] ?[0-9]+' core/docs/*.md.
