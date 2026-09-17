@@ -28,6 +28,19 @@ symlink() {
 
 echo "=== agent-config setup (SRC: ${SRC}) ==="
 
+# The rule docs referenced from AGENTS.md and the skills name the canonical path,
+# so a clone somewhere else leaves those references pointing at nothing.
+CANONICAL="$HOME/.config/agent-config"
+if [ "$SRC" != "$CANONICAL" ]; then
+    echo ""
+    echo "  warning: config is at ${SRC}, not ${CANONICAL}."
+    echo "           Paths written inside AGENTS.md and the skills assume"
+    echo "           ${CANONICAL}, so agent instructions will reference files that"
+    echo "           are not there. Move the clone, or export AGENT_CONFIG_DIR when"
+    echo "           running ai-init / ai-context."
+    echo ""
+fi
+
 # ── Claude Code ──────────────────────────────────────────────────────────────
 symlink "$SRC/agents/claude-code/CLAUDE.md"       "$HOME/.claude/CLAUDE.md"
 symlink "$SRC/agents/claude-code/CLAUDE.local.md" "$HOME/.claude/CLAUDE.local.md"

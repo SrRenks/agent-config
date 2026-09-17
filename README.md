@@ -38,9 +38,16 @@ cd ~/.config/agent-config
 bash agents/dsh/install.sh    # dsh preset and shared skills (optional)
 ```
 
-`setup.sh` derives every path from its own location, so the repo can be cloned
-anywhere, and it is safe to re-run. A real file sitting where a symlink will go
-is copied to `backups/<timestamp>/` first, so nothing is lost.
+`setup.sh` derives every path from its own location and is safe to re-run. A real
+file sitting where a symlink will go is copied to `backups/<timestamp>/` first, so
+nothing is lost.
+
+Keep the clone at `~/.config/agent-config`. The paths written inside `AGENTS.md`
+and the skills name that location, and `ai-init` / `ai-context` point every project
+they touch at it, so a clone somewhere else leaves agent instructions referencing
+files that are not there. `setup.sh` warns when it runs from another path, and
+`ai-init` / `ai-context` accept `AGENT_CONFIG_DIR` if you relocate the config on
+purpose.
 
 ## The `.ai/` directory
 
