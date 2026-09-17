@@ -225,10 +225,9 @@ Claude Code gets two hooks, wired in `agents/claude-code/settings.json`:
   deletes, `sudo`, `git push --force`, `chmod 777`, raw disk writes (`dd`,
   `mkfs`, `> /dev/sda`), and `git add -A` or `git add .`, which the shared rules
   ban for every tool.
-- `lint-check` is meant to report lint output after a file write or edit, for
-  Python, Go, and Rust files whose linter is installed. As shipped it returns
-  before linting: the hook compares `tool_name` against lowercase `write` and
-  `edit`, while the matcher in `settings.json` says `Write|Edit`.
+- `lint-check` reports lint output after a file write or edit, for Python, Go, and
+  Rust files whose linter is installed. It lowercases `tool_name` before comparing,
+  so the `Write|Edit` matcher in `settings.json` reaches it.
 
 `session-init` is the one piece that waits to be asked for. It would create `.ai/`
 wherever a session starts, which surprised projects that chose not to initialize,
